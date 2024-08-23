@@ -1,0 +1,48 @@
+div.field-error {
+    color: rgb(252, 177, 177);
+    font-size: 13px;
+    margin-top: 1px;
+}
+
+::-webkit-scrollbar {
+    width: 17px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #d6dee1;
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #a8bbbf;
+}
+
+.p-fieldset .p-fieldset-legend {
+    background-color: #9290f0;
+    color: white;
+}
+@media (max-width: 565px) {
+    .newslist-item {
+        flex-direction: column;
+    }
+    .newslist-item-photo {
+        align-self: center;
+    }
+    .create-news-button {
+        align-self: auto !important;
+    }
+    .create-place-button {
+        align-self: auto !important;
+    }
+    .admin-panel-switch-button {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
