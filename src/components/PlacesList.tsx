@@ -16,9 +16,10 @@ import NoData from './NoData';
 
 interface PlacesListProps {
   setCurrentListItem: (id: string | number) => void;
+  currentListItem: string | number | null;
 }
 
-const PlacesList: FC<PlacesListProps> = ({ setCurrentListItem }) => {
+const PlacesList: FC<PlacesListProps> = ({ setCurrentListItem, currentListItem }) => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(10);
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
@@ -70,6 +71,7 @@ const PlacesList: FC<PlacesListProps> = ({ setCurrentListItem }) => {
       >
         {data?.items?.map((item, index) => (
           <PlaceListItem
+            currentListItem={currentListItem}
             onItemClick={setCurrentListItem}
             place={item}
             key={index}

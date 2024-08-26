@@ -17,7 +17,7 @@ const Places = () => {
         overflowY: 'auto',
       }}
     >
-      <PlacesList setCurrentListItem={setCurrentListItem} />
+      <PlacesList currentListItem={currentListItem} setCurrentListItem={setCurrentListItem} />
       <PlaceItem currentListItem={currentListItem} />
     </div>
   );
