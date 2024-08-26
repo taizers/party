@@ -28,8 +28,12 @@ const PlaceItem: FC<PlaceItemProps> = ({ currentListItem }) => {
       }}
     >
       {data && <PlaceInfo placeData={data} />}
-      {!data && !isLoading && currentListItem !== null && <NoData color='white' />}
-      {currentListItem === null && !data && !isLoading && <NoData color='white' label={'Select Some Place'} />}
+      {!data && !isLoading && currentListItem !== null && (
+        <NoData color="white" />
+      )}
+      {currentListItem === null && !data && !isLoading && (
+        <NoData color="white" label={'Select Some Place'} />
+      )}
     </div>
   );
 };

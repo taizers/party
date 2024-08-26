@@ -25,7 +25,11 @@ const NewsAdmin: FC = () => {
   const [deleteNews, { data: deleteData, error: deleteError }] =
     newsApiSlice.useDeleteNewsMutation();
   const [updateStatus, { error }] = newsApiSlice.useUpdateNewsStatusMutation();
-  const { data, error: getListError, isLoading } = newsApiSlice.useGetAdminNewsListQuery<
+  const {
+    data,
+    error: getListError,
+    isLoading,
+  } = newsApiSlice.useGetAdminNewsListQuery<
     useGetQueryResponce<IResponcePaginatedData<IAdminItem>>
   >({
     page,
@@ -81,11 +85,13 @@ const NewsAdmin: FC = () => {
 
   return (
     <div>
-      {data && <AdminTable<IAdminItem>
-        columns={columns}
-        values={data.items}
-        title={'News'}
-      />}
+      {data && (
+        <AdminTable<IAdminItem>
+          columns={columns}
+          values={data.items}
+          title={'News'}
+        />
+      )}
       {!data && !isLoading && <NoData />}
       <PaginationComponent
         page={{ current: page, setPage }}

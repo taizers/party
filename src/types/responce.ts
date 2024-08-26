@@ -97,6 +97,6 @@ export interface IResponcePaginatedData<T> {
 }
 
 export interface fileResponse {
-  fileName: string,
-  fileUrl: string,
+  fileName: string;
+  fileUrl: string;
 }

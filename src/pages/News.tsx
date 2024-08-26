@@ -51,26 +51,26 @@ const News: FC = () => {
           {isModalOpen && <CreateNewsModal setVisible={setModalOpen} />}
         </>
       )}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-around',
-              flexWrap: 'wrap',
-              gap: '20px',
-              padding: '10px',
-              width: '100%',
-            }}
-          >
-            {data?.items.map((item, index) => (
-              <NewsListItem newsItem={item} key={index} />
-            ))}
-            {!data && !isLoading && <NoData />}
-          </div>
-          <PaginationComponent
-            page={{ current: page, setPage }}
-            limit={{ current: limit, setLimit }}
-            itemsCount={data?.itemCounts || 1}
-          />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-around',
+          flexWrap: 'wrap',
+          gap: '20px',
+          padding: '10px',
+          width: '100%',
+        }}
+      >
+        {data?.items.map((item, index) => (
+          <NewsListItem newsItem={item} key={index} />
+        ))}
+        {!data && !isLoading && <NoData />}
+      </div>
+      <PaginationComponent
+        page={{ current: page, setPage }}
+        limit={{ current: limit, setLimit }}
+        itemsCount={data?.itemCounts || 1}
+      />
     </div>
   );
 };

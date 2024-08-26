@@ -28,13 +28,16 @@ const PlacesAdmin: FC = () => {
     fishPlacesApiSlice.useDeletePlaceMutation();
   const [updateStatus, { error }] =
     fishPlacesApiSlice.useUpdatePlaceStatusMutation();
-  const { data, error: getListError, isLoading } =
-    fishPlacesApiSlice.useGetAdminPlacesListQuery<
-      useGetQueryResponce<IResponcePaginatedData<IAdminPalce>>
-    >({
-      page,
-      limit,
-    });
+  const {
+    data,
+    error: getListError,
+    isLoading,
+  } = fishPlacesApiSlice.useGetAdminPlacesListQuery<
+    useGetQueryResponce<IResponcePaginatedData<IAdminPalce>>
+  >({
+    page,
+    limit,
+  });
 
   useEffect(() => {
     if (deleteData) {
@@ -87,11 +90,13 @@ const PlacesAdmin: FC = () => {
 
   return (
     <div>
-      {data && <AdminTable<IAdminPalce>
-        columns={columns}
-        values={data.items}
-        title={'Places'}
-      />}
+      {data && (
+        <AdminTable<IAdminPalce>
+          columns={columns}
+          values={data.items}
+          title={'Places'}
+        />
+      )}
       {!data && !isLoading && <NoData />}
       <PaginationComponent
         page={{ current: page, setPage }}

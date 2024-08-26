@@ -35,7 +35,13 @@ const CreateNewsForm: FC<CreateNewsFormProps> = ({ onSubmit, onCancel }) => {
           .required('Required'),
       })}
       onSubmit={(values, { setSubmitting }) => {
-        onSubmit({ ...values, photos: filesLinks?.map(item => ({photoPath: item.fileUrl}))}, setSubmitting);
+        onSubmit(
+          {
+            ...values,
+            photos: filesLinks?.map((item) => ({ photoPath: item.fileUrl })),
+          },
+          setSubmitting
+        );
       }}
     >
       {({ isValid, isSubmitting, dirty }) => (

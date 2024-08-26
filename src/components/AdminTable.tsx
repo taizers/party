@@ -20,20 +20,20 @@ export default function AdminTable<T>({
   );
 
   return (
-      <DataTable
-        value={values as DataTableValue[]}
-        size={'small'}
-        header={header}
-        tableStyle={{ minWidth: '600px' }}
-      >
-        {columns.map((item, index) => (
-          <Column
-            key={index}
-            field={item.field}
-            header={item.header}
-            body={item.template}
-          ></Column>
-        ))}
-      </DataTable>
+    <DataTable
+      value={values as DataTableValue[]}
+      size={'small'}
+      header={header}
+      tableStyle={{ minWidth: '600px' }}
+    >
+      {columns.map((item, index) => (
+        <Column
+          key={index}
+          field={item.field}
+          header={item.header}
+          body={item.template}
+        ></Column>
+      ))}
+    </DataTable>
   );
 }

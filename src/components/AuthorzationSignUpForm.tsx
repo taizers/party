@@ -107,7 +107,7 @@ const formData = {
       validation: Yup.string().oneOf(
         [Yup.ref('password')],
         'Passwords must match'
-      ),
+      ).required('Required'),
     },
   ],
 };

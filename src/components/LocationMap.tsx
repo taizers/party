@@ -19,9 +19,9 @@ const LocationMap: FC<LocationMapProps> = ({ setCords, cords }) => {
     const map = useMapEvents({
       click(e) {
         setCords(e.latlng);
+        map.flyTo(e.latlng, map.getMaxZoom());
       },
     });
-    // console.log(map);
 
     return cords === null ? null : (
       <Marker position={cords as LatLngExpression}>
@@ -33,7 +33,7 @@ const LocationMap: FC<LocationMapProps> = ({ setCords, cords }) => {
   return (
     <div style={{ margin: '0 auto' }}>
       <MapContainer
-        center={[53.90,27.55]}
+        center={[53.9, 27.55]}
         zoom={13}
         scrollWheelZoom={true}
         style={{ height: '300px' }}

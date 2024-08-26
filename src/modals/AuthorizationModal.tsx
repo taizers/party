@@ -184,17 +184,21 @@ const AuthorizationModal: FC<IAuthorizationModal> = ({ setVisible }) => {
       onHide={onHide}
       content={() => {
         if (formValue === 'login') {
-          return <AuthorizationLoginForm
+          return (
+            <AuthorizationLoginForm
+              onCancel={onHide}
+              onFormTypeChange={onFormTypeChange}
+              onSubmit={onSubmit}
+            />
+          );
+        }
+        return (
+          <AuthorizationSignUpForm
             onCancel={onHide}
             onFormTypeChange={onFormTypeChange}
             onSubmit={onSubmit}
           />
-        }
-        return<AuthorizationSignUpForm
-          onCancel={onHide}
-          onFormTypeChange={onFormTypeChange}
-          onSubmit={onSubmit}
-        />
+        );
       }}
     ></Dialog>
   );

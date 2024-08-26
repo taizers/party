@@ -111,16 +111,12 @@ export const MyCheckbox = ({ children, style, ...props }: IMyCheckBox) => {
 
 export const MySelect = ({ style, ...props }: IMySelect) => {
   const [field, meta] = useField({ ...props, type: 'checkbox' });
-  
-  const error = meta.error as {name?: string};
+
+  const error = meta.error as { name?: string };
 
   return (
     <div style={{ marginBottom: '10px', width: '100%', ...style }}>
-      <Dropdown
-        style={{width: '100%'}}
-        {...field}
-        {...props}
-      />
+      <Dropdown style={{ width: '100%' }} {...field} {...props} />
       {meta.touched && error?.name ? (
         <div style={{ alignSelf: 'center' }} className="field-error">
           {error?.name}
@@ -133,11 +129,7 @@ export const MyMultiSelect = ({ style, ...props }: IMyMultiSelect) => {
   const [field, meta] = useField({ ...props, type: 'checkbox' });
   return (
     <div style={{ marginBottom: '10px', width: '100%', ...style }}>
-      <MultiSelect
-        style={{width: '100%'}}
-        {...field}
-        {...props}
-      />
+      <MultiSelect style={{ width: '100%' }} {...field} {...props} />
       {meta.touched && meta.error ? (
         <div style={{ alignSelf: 'center' }} className="field-error">
           {meta.error}

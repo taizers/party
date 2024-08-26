@@ -72,17 +72,19 @@ const CommentsAdmin: FC = () => {
 
   return (
     <div>
-        {data && <AdminTable<IAdminComment>
+      {data && (
+        <AdminTable<IAdminComment>
           columns={columns}
           values={data.items}
           title={'Cooments'}
-        />}
-        {!data && !isLoading && <NoData />}
-        <PaginationComponent
-          page={{ current: page, setPage }}
-          limit={{ current: limit, setLimit }}
-          itemsCount={data?.itemCounts || 1}
         />
+      )}
+      {!data && !isLoading && <NoData />}
+      <PaginationComponent
+        page={{ current: page, setPage }}
+        limit={{ current: limit, setLimit }}
+        itemsCount={data?.itemCounts || 1}
+      />
     </div>
   );
 };

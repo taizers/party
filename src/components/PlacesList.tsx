@@ -60,28 +60,28 @@ const PlacesList: FC<PlacesListProps> = ({ setCurrentListItem }) => {
           {isModalOpen && <CreatePlaceModal setVisible={setModalOpen} />}
         </>
       )}
-          <div
-            style={{
-              flexGrow: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '5px',
-            }}
-          >
-            {data?.items?.map((item, index) => (
-              <PlaceListItem
-                onItemClick={setCurrentListItem}
-                place={item}
-                key={index}
-              />
-            ))}
-            {!data && !isLoading && <NoData color='white' />}
-          </div>
-          <PaginationComponent
-            page={{ current: page, setPage }}
-            limit={{ current: limit, setLimit }}
-            itemsCount={data?.itemCounts || 1}
+      <div
+        style={{
+          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '5px',
+        }}
+      >
+        {data?.items?.map((item, index) => (
+          <PlaceListItem
+            onItemClick={setCurrentListItem}
+            place={item}
+            key={index}
           />
+        ))}
+        {!data && !isLoading && <NoData color="white" />}
+      </div>
+      <PaginationComponent
+        page={{ current: page, setPage }}
+        limit={{ current: limit, setLimit }}
+        itemsCount={data?.itemCounts || 1}
+      />
     </div>
   );
 };

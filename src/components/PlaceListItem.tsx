@@ -30,11 +30,21 @@ const PlaceListItem: FC<PlaceListItemProps> = ({ place, onItemClick }) => {
         borderRadius: '5px',
       }}
     >
-      <div style={{ display: 'flex', gap: '10px', color: '#eff2ff', padding: '10px', width: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
-        <p style={{fontSize: '18px'}}>
+      <div
+        style={{
+          display: 'flex',
+          gap: '10px',
+          color: '#eff2ff',
+          padding: '10px',
+          width: '100%',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <p style={{ fontSize: '18px' }}>
           {place.name} (<span>{place.typePlace.name}</span>)
         </p>
-        {place.requirePayment && <span className='pi pi-dollar'></span>}
+        {place.requirePayment && <span className="pi pi-dollar"></span>}
       </div>
       {/* <Button // Delete button if need
         style={{ height: '30px', flexShrink: 0 }}
