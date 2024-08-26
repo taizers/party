@@ -31,13 +31,12 @@ type FieldType =
   | 'initialValue'
   | 'validation';
 
-interface AuthorizationFormProps {
+interface AuthorizationLoginFormProps {
   onSubmit: (
     value: object,
     setSubmitting: (data: boolean) => void,
     resetForm: () => void
   ) => void;
-  formData: IFormData;
   onFormTypeChange: (formReset: () => void) => void;
   onCancel: () => void;
 }
@@ -57,10 +56,37 @@ function getFormValues<T>(formData: IFormData, feild: FieldType) {
   return obj as T;
 }
 
-const AuthorizationForm: FC<AuthorizationFormProps> = ({
+const formData = {
+  title: 'Login',
+  buttonTitle: 'Login',
+  switchButtonTitle: "I don't have an account",
+  fields: [
+    {
+      name: 'login',
+      label: 'Login',
+      type: 'text',
+      placeholder: 'Login...',
+      initialValue: '',
+      validation: Yup.string()
+        .max(15, 'Must be 15 characters or less')
+        .required('Required'),
+    },
+    {
+      name: 'password',
+      label: 'Password',
+      type: 'password',
+      initialValue: '',
+      validation: Yup.string()
+        .min(2, 'Must be 8 characters or more') //TODO return to 8
+        .max(20, 'Must be 20 characters or less')
+        .required('Required'),
+    },
+  ],
+};
+
+const AuthorizationLoginForm: FC<AuthorizationLoginFormProps> = ({
   onSubmit,
   onCancel,
-  formData,
   onFormTypeChange,
 }) => {
   return (
@@ -126,4 +152,4 @@ const AuthorizationForm: FC<AuthorizationFormProps> = ({
   );
 };
 
-export default AuthorizationForm;
+export default AuthorizationLoginForm;

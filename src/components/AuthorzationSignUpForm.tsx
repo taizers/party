@@ -31,13 +31,12 @@ type FieldType =
   | 'initialValue'
   | 'validation';
 
-interface AuthorizationFormProps {
+interface AuthorizationSignUpFormProps {
   onSubmit: (
     value: object,
     setSubmitting: (data: boolean) => void,
     resetForm: () => void
   ) => void;
-  formData: IFormData;
   onFormTypeChange: (formReset: () => void) => void;
   onCancel: () => void;
 }
@@ -57,10 +56,65 @@ function getFormValues<T>(formData: IFormData, feild: FieldType) {
   return obj as T;
 }
 
-const AuthorizationForm: FC<AuthorizationFormProps> = ({
+const formData = {
+  title: 'Sign Up',
+  buttonTitle: 'Sign Up',
+  switchButtonTitle: 'I have an account',
+  fields: [
+    {
+      name: 'login',
+      label: 'Login',
+      type: 'text',
+      placeholder: 'Login...',
+      initialValue: '',
+      validation: Yup.string()
+        .max(15, 'Must be 15 characters or less')
+        .required('Required'),
+    },
+    {
+      name: 'email',
+      label: 'Email',
+      type: 'email',
+      placeholder: 'Email...',
+      initialValue: '',
+      validation: Yup.string().email('Invalid email').required('Required'),
+    },
+    {
+      name: 'name',
+      label: 'Name',
+      type: 'text',
+      placeholder: 'Your name...',
+      initialValue: '',
+      validation: Yup.string()
+        .max(20, 'Must be 20 characters or less')
+        .required('Required'),
+    },
+    {
+      name: 'password',
+      label: 'Password',
+      type: 'password',
+      initialValue: '',
+      validation: Yup.string()
+        .min(8, 'Must be 8 characters or more')
+        .max(20, 'Must be 20 characters or less')
+        .required('Required'),
+    },
+    {
+      name: 'confirmpassword',
+      label: 'Confirm password',
+      type: 'password',
+      initialValue: '',
+      validation: Yup.string().oneOf(
+        [Yup.ref('password')],
+        'Passwords must match'
+      ),
+    },
+  ],
+};
+
+const AuthorizationSignUpForm: FC<AuthorizationSignUpFormProps> = ({
   onSubmit,
   onCancel,
-  formData,
   onFormTypeChange,
 }) => {
   return (
@@ -126,4 +180,4 @@ const AuthorizationForm: FC<AuthorizationFormProps> = ({
   );
 };
 
-export default AuthorizationForm;
+export default AuthorizationSignUpForm;

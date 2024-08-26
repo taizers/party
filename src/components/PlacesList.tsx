@@ -65,7 +65,6 @@ const PlacesList: FC<PlacesListProps> = ({ setCurrentListItem }) => {
               flexGrow: 1,
               display: 'flex',
               flexDirection: 'column',
-              overflowY: 'auto',
               gap: '5px',
             }}
           >

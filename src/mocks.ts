@@ -174,6 +174,102 @@ export const listOfPlacesMock = {
     },
     {
       id: 5,
+      name: 'Смольнянское озеро',
+      coordinates: '54.889°,27.530°',
+      requirePayment: false,
+      typePlace: {
+        id: 1,
+        name: 'Речка',
+      },
+      photos: [
+        {
+          photoPath:
+            'https://downloader.disk.yandex.ru/disk/21c74606c8cb2b4ccb147d9c797bcbe75f7bdbfa01a8558df012ebb2f2749fc/66bf4917/0otFc_nzep39fQhSdhCWuI8HVekay7FNtt4pr-beG42cIzz_b8FNwZ3E5nzcPeXFpXl3UbUdQsdCYxGvVGcs7A%3D%3D?uid=1645277963&filename=2016_20_skidel_otdyh_skidel_otdyh_kotra.jpg&disposition=attachment&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=1645277963&fsize=5085&hid=53462e22b49fa2e3703a30b8f0dca134&media_type=image&tknv=v2&etag=67f4adefe2c98a21adaba0baab329dd5',
+        },
+      ],
+    },
+    {
+      id: 6,
+      name: 'Смольнянское озеро',
+      coordinates: '54.889°,27.530°',
+      requirePayment: false,
+      typePlace: {
+        id: 1,
+        name: 'Речка',
+      },
+      photos: [
+        {
+          photoPath:
+            'https://downloader.disk.yandex.ru/disk/21c74606c8cb2b4ccb147d9c797bcbe75f7bdbfa01a8558df012ebb2f2749fc/66bf4917/0otFc_nzep39fQhSdhCWuI8HVekay7FNtt4pr-beG42cIzz_b8FNwZ3E5nzcPeXFpXl3UbUdQsdCYxGvVGcs7A%3D%3D?uid=1645277963&filename=2016_20_skidel_otdyh_skidel_otdyh_kotra.jpg&disposition=attachment&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=1645277963&fsize=5085&hid=53462e22b49fa2e3703a30b8f0dca134&media_type=image&tknv=v2&etag=67f4adefe2c98a21adaba0baab329dd5',
+        },
+      ],
+    },
+    {
+      id: 7,
+      name: 'Смольнянское озеро',
+      coordinates: '54.889°,27.530°',
+      requirePayment: false,
+      typePlace: {
+        id: 1,
+        name: 'Речка',
+      },
+      photos: [
+        {
+          photoPath:
+            'https://downloader.disk.yandex.ru/disk/21c74606c8cb2b4ccb147d9c797bcbe75f7bdbfa01a8558df012ebb2f2749fc/66bf4917/0otFc_nzep39fQhSdhCWuI8HVekay7FNtt4pr-beG42cIzz_b8FNwZ3E5nzcPeXFpXl3UbUdQsdCYxGvVGcs7A%3D%3D?uid=1645277963&filename=2016_20_skidel_otdyh_skidel_otdyh_kotra.jpg&disposition=attachment&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=1645277963&fsize=5085&hid=53462e22b49fa2e3703a30b8f0dca134&media_type=image&tknv=v2&etag=67f4adefe2c98a21adaba0baab329dd5',
+        },
+      ],
+    },
+    {
+      id: 8,
+      name: 'Озеро Белое',
+      coordinates: '53.758°,27.501°',
+      requirePayment: true,
+      typePlace: {
+        id: 2,
+        name: 'Озеро',
+      },
+      photos: [
+        {
+          photoPath:
+            'https://downloader.disk.yandex.ru/disk/638e6edecf112e3d661d2ad5ad11ac618252a2f5c97ea86a558d518752e3a3cf/66bf4919/0otFc_nzep39fQhSdhCWuCP73hVpSD9TAfioXquOWyF008c70fsGr69xEn4i7i88OoocR6_lZ2H-hh1vkE4iHg%3D%3D?uid=1645277963&filename=neman3.jpg&disposition=attachment&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=1645277963&fsize=12408&hid=609cdb74cd4d486d6156ed2215bc78f5&media_type=image&tknv=v2&etag=11be8676c13a88bcbc23a8c3faa93633',
+        },
+      ],
+    },
+    {
+      id: 9,
+      name: 'Озеро Белое',
+      coordinates: '53.758°,27.501°',
+      requirePayment: true,
+      typePlace: {
+        id: 2,
+        name: 'Озеро',
+      },
+      photos: [
+        {
+          photoPath:
+            'https://downloader.disk.yandex.ru/disk/638e6edecf112e3d661d2ad5ad11ac618252a2f5c97ea86a558d518752e3a3cf/66bf4919/0otFc_nzep39fQhSdhCWuCP73hVpSD9TAfioXquOWyF008c70fsGr69xEn4i7i88OoocR6_lZ2H-hh1vkE4iHg%3D%3D?uid=1645277963&filename=neman3.jpg&disposition=attachment&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=1645277963&fsize=12408&hid=609cdb74cd4d486d6156ed2215bc78f5&media_type=image&tknv=v2&etag=11be8676c13a88bcbc23a8c3faa93633',
+        },
+      ],
+    },
+    {
+      id: 10,
+      name: 'Озеро Белое',
+      coordinates: '53.758°,27.501°',
+      requirePayment: true,
+      typePlace: {
+        id: 2,
+        name: 'Озеро',
+      },
+      photos: [
+        {
+          photoPath:
+            'https://downloader.disk.yandex.ru/disk/638e6edecf112e3d661d2ad5ad11ac618252a2f5c97ea86a558d518752e3a3cf/66bf4919/0otFc_nzep39fQhSdhCWuCP73hVpSD9TAfioXquOWyF008c70fsGr69xEn4i7i88OoocR6_lZ2H-hh1vkE4iHg%3D%3D?uid=1645277963&filename=neman3.jpg&disposition=attachment&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=1645277963&fsize=12408&hid=609cdb74cd4d486d6156ed2215bc78f5&media_type=image&tknv=v2&etag=11be8676c13a88bcbc23a8c3faa93633',
+        },
+      ],
+    },
+    {
+      id: 11,
       name: 'Озеро Белое',
       coordinates: '53.758°,27.501°',
       requirePayment: true,

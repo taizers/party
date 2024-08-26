@@ -35,6 +35,7 @@ const News: FC = () => {
         flexDirection: 'column',
         padding: '20px',
         gap: '15px',
+        overflowY: 'auto',
       }}
     >
       {(user?.roles?.includes(adminRole) ||

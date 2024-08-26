@@ -6,97 +6,99 @@ import { setUserData, setUserToken } from '../store/reducers/AuthSlice';
 import { getUserFromToken } from '../utils';
 import { setToken } from '../utils/localStorage';
 import { createToast } from '../utils/toasts';
-import AuthorizationForm from '../components/AuthorzationForm';
-import * as Yup from 'yup';
+// import AuthorizationForm from '../components/AuthorzationForm';
+// import * as Yup from 'yup';
+import AuthorizationSignUpForm from '../components/AuthorzationSignUpForm';
+import AuthorizationLoginForm from '../components/AuthorzationLoginForm';
 
 interface IAuthorizationModal {
   setVisible: (data: boolean) => void;
 }
 
-const formsData = {
-  login: {
-    title: 'Login',
-    buttonTitle: 'Login',
-    switchButtonTitle: "I don't have an account",
-    fields: [
-      {
-        name: 'login',
-        label: 'Login',
-        type: 'text',
-        placeholder: 'Login...',
-        initialValue: '',
-        validation: Yup.string()
-          .max(15, 'Must be 15 characters or less')
-          .required('Required'),
-      },
-      {
-        name: 'password',
-        label: 'Password',
-        type: 'password',
-        initialValue: '',
-        validation: Yup.string()
-          .min(2, 'Must be 8 characters or more') //TODO return to 8
-          .max(20, 'Must be 20 characters or less')
-          .required('Required'),
-      },
-    ],
-  },
-  signUp: {
-    title: 'Sign Up',
-    buttonTitle: 'Sign Up',
-    switchButtonTitle: 'I have an account',
-    fields: [
-      {
-        name: 'login',
-        label: 'Login',
-        type: 'text',
-        placeholder: 'Login...',
-        initialValue: '',
-        validation: Yup.string()
-          .max(15, 'Must be 15 characters or less')
-          .required('Required'),
-      },
-      {
-        name: 'email',
-        label: 'Email',
-        type: 'email',
-        placeholder: 'Email...',
-        initialValue: '',
-        validation: Yup.string().email('Invalid email').required('Required'),
-      },
-      {
-        name: 'name',
-        label: 'Name',
-        type: 'text',
-        placeholder: 'Your name...',
-        initialValue: '',
-        validation: Yup.string()
-          .max(20, 'Must be 20 characters or less')
-          .required('Required'),
-      },
-      {
-        name: 'password',
-        label: 'Password',
-        type: 'password',
-        initialValue: '',
-        validation: Yup.string()
-          .min(8, 'Must be 8 characters or more')
-          .max(20, 'Must be 20 characters or less')
-          .required('Required'),
-      },
-      {
-        name: 'confirmpassword',
-        label: 'Confirm password',
-        type: 'password',
-        initialValue: '',
-        validation: Yup.string().oneOf(
-          [Yup.ref('password')],
-          'Passwords must match'
-        ),
-      },
-    ],
-  },
-};
+// const formsData = {
+//   login: {
+//     title: 'Login',
+//     buttonTitle: 'Login',
+//     switchButtonTitle: "I don't have an account",
+//     fields: [
+//       {
+//         name: 'login',
+//         label: 'Login',
+//         type: 'text',
+//         placeholder: 'Login...',
+//         initialValue: '',
+//         validation: Yup.string()
+//           .max(15, 'Must be 15 characters or less')
+//           .required('Required'),
+//       },
+//       {
+//         name: 'password',
+//         label: 'Password',
+//         type: 'password',
+//         initialValue: '',
+//         validation: Yup.string()
+//           .min(2, 'Must be 8 characters or more') //TODO return to 8
+//           .max(20, 'Must be 20 characters or less')
+//           .required('Required'),
+//       },
+//     ],
+//   },
+//   signUp: {
+//     title: 'Sign Up',
+//     buttonTitle: 'Sign Up',
+//     switchButtonTitle: 'I have an account',
+//     fields: [
+//       {
+//         name: 'login',
+//         label: 'Login',
+//         type: 'text',
+//         placeholder: 'Login...',
+//         initialValue: '',
+//         validation: Yup.string()
+//           .max(15, 'Must be 15 characters or less')
+//           .required('Required'),
+//       },
+//       {
+//         name: 'email',
+//         label: 'Email',
+//         type: 'email',
+//         placeholder: 'Email...',
+//         initialValue: '',
+//         validation: Yup.string().email('Invalid email').required('Required'),
+//       },
+//       {
+//         name: 'name',
+//         label: 'Name',
+//         type: 'text',
+//         placeholder: 'Your name...',
+//         initialValue: '',
+//         validation: Yup.string()
+//           .max(20, 'Must be 20 characters or less')
+//           .required('Required'),
+//       },
+//       {
+//         name: 'password',
+//         label: 'Password',
+//         type: 'password',
+//         initialValue: '',
+//         validation: Yup.string()
+//           .min(8, 'Must be 8 characters or more')
+//           .max(20, 'Must be 20 characters or less')
+//           .required('Required'),
+//       },
+//       {
+//         name: 'confirmpassword',
+//         label: 'Confirm password',
+//         type: 'password',
+//         initialValue: '',
+//         validation: Yup.string().oneOf(
+//           [Yup.ref('password')],
+//           'Passwords must match'
+//         ),
+//       },
+//     ],
+//   },
+// };
 
 const AuthorizationModal: FC<IAuthorizationModal> = ({ setVisible }) => {
   const [formValue, setFormValue] = useState<'login' | 'signUp'>('login');
@@ -180,14 +182,21 @@ const AuthorizationModal: FC<IAuthorizationModal> = ({ setVisible }) => {
       visible
       modal
       onHide={onHide}
-      content={() => (
-        <AuthorizationForm
-          formData={formsData[formValue]}
+      content={() => {
+        if (formValue === 'login') {
+          return <AuthorizationLoginForm
+            onCancel={onHide}
+            onFormTypeChange={onFormTypeChange}
+            onSubmit={onSubmit}
+          />
+        }
+        return<AuthorizationSignUpForm
           onCancel={onHide}
           onFormTypeChange={onFormTypeChange}
           onSubmit={onSubmit}
         />
-      )}
+
+      }}
     ></Dialog>
   );
 };

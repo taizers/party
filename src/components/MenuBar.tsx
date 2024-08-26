@@ -57,10 +57,10 @@ const MenuBar: FC<IMEnuBar> = ({ setLoginDialogVisible, child }) => {
   }
 
   return (
-    <>
-      <Menu model={items} end={end} />
-      {child}
-    </>
+    <div style={{height: '100%'}}>
+      <Menu style={{height: '8%'}} model={items} end={end} />
+      <div style={{height: '92%'}}>{child}</div>
+    </div>
   );
 };
 

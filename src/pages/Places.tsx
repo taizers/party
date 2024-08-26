@@ -11,9 +11,10 @@ const Places = () => {
     <div
       style={{
         width: '100%',
-        height: '90%',
+        height: '100%',
         display: 'flex',
         flexWrap: 'wrap',
+        overflowY: 'auto',
       }}
     >
       <PlacesList setCurrentListItem={setCurrentListItem} />

@@ -13,7 +13,7 @@ const AdminPanel: FC = () => {
   const [page, setPage] = useState(pageOptions[1].value);
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ padding: '20px',overflowY: 'auto' }}>
       <div className="flex justify-content-center mb-4">
         <SelectButton
           value={page}

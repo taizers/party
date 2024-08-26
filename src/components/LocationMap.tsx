@@ -21,7 +21,7 @@ const LocationMap: FC<LocationMapProps> = ({ setCords, cords }) => {
         setCords(e.latlng);
       },
     });
-    console.log(map);
+    // console.log(map);
 
     return cords === null ? null : (
       <Marker position={cords as LatLngExpression}>
