@@ -77,7 +77,7 @@ const formData = {
       type: 'password',
       initialValue: '',
       validation: Yup.string()
-        .min(2, 'Must be 8 characters or more') //TODO return to 8
+        .min(8, 'Must be 8 characters or more')
         .max(20, 'Must be 20 characters or less')
         .required('Required'),
     },

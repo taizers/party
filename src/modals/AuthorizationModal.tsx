@@ -195,7 +195,6 @@ const AuthorizationModal: FC<IAuthorizationModal> = ({ setVisible }) => {
           onFormTypeChange={onFormTypeChange}
           onSubmit={onSubmit}
         />
-
       }}
     ></Dialog>
   );

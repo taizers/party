@@ -29,6 +29,8 @@ const App: FC = () => {
       if (user) {
         dispatch(setUserToken(localToken));
         dispatch(setUserData(user));
+      } else {
+        dispatch(setUserData({}));
       }
     } else {
       dispatch(setUserData({}));
