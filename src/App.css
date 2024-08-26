@@ -27,7 +27,21 @@ div.field-error {
     background-color: #9290f0;
     color: white;
 }
+
+.app-item {
+    height: 92%
+}
+.menu-bar {
+    height: 8%
+}
+
 @media (max-width: 565px) {
+    .app-item {
+        height: 90%
+    }
+    .menu-bar {
+        height: 10%
+    }    
     .newslist-item {
         flex-direction: column;
     }
