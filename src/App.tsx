@@ -18,7 +18,7 @@ import AdminParty from './pages/AdminParty';
 import UserParties from './pages/UserParties';
 import UsersParty from './pages/UsersParty';
 import OrganizatorsParty from './pages/OrganizatorsParty';
-import { adminRole, organizatorRole, userRole } from './constants';
+import { adminRole, organizatorRole, userRole } from './constants.ts';
 import PrivateRoleRoute from './components/PrivateRoleRoute';
 import { createToast } from './utils/toasts';
 

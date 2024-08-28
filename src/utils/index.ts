@@ -4,10 +4,9 @@ import { createToast } from './toasts';
 export const getUserFromToken = (token: string) => {
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
-
     const currentDate = new Date();
 
-    if (currentDate > payload.exp) {
+    if (currentDate < payload.exp) {
       const role = payload.realm_access?.roles?.find(
         (item: string) =>
           item === 'ORGANIZER' || item === 'ADMIN' || item === 'USER'

@@ -49,7 +49,7 @@ const PartyInfo: FC<PartyInfoProps> = ({ party }) => {
           {party.name} (<span>{party.type}</span>)
         </h3>
         <h4 style={{ alignSelf: 'center', fontSize: '18px' }}>
-          {'Organizer: '}
+          {'Organizator: '}
           {party.organizerUsername}
         </h4>
         <p style={{ textIndent: '20px' }}>{party.description}</p>
@@ -69,7 +69,7 @@ const PartyInfo: FC<PartyInfoProps> = ({ party }) => {
         </h4>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <div>
-            {'Cost'}: {party.ticketCost}
+            {'Ticket Cost'}: {party.ticketCost ? `${party.ticketCost}$` : 'Free'}
           </div>
           <div>
             {'Minimal Rating'}: {party.minimalRating}

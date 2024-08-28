@@ -1,5 +1,5 @@
 export const TOKEN_KEY = 'access_token';
-export const apiUrl = 'https://gs';
+export const apiUrl = '';
 export const defaultDelay = 500;
 export const defaultCurrentPage = 0;
 

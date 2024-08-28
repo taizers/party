@@ -2,7 +2,7 @@ import { Button } from 'primereact/button';
 import { Rating, RatingChangeEvent } from 'primereact/rating';
 import DeleteModal from '../modals/DeleteModal';
 import { useState } from 'react';
-import { waitStatuses } from '../constants';
+import { waitStatuses } from '../constants.ts';
 
 export const StatusTemplate = <T extends { status: string }>(product: T) => {
   return (
