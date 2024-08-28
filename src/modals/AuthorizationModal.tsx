@@ -80,8 +80,7 @@ const AuthorizationModal: FC<IAuthorizationModal> = ({ setVisible }) => {
     if (formValue === 'login') {
       login(values);
     } else {
-      delete values.confirm_password;
-      signUp({ ...values, city: location });
+      signUp({ ...values, city: location, confirm_password: undefined });
     }
   };
 
