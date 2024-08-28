@@ -15,8 +15,8 @@ interface IAuthorizationModal {
 
 const AuthorizationModal: FC<IAuthorizationModal> = ({ setVisible }) => {
   const [formValue, setFormValue] = useState<'login' | 'signUp'>('login');
-  const [login, { data, error }] = authApiSlice.useLoginMutation();
-  const [signUp, { data: signUpData, error: signUpError }] =
+  const [login, { data, error, isLoading }] = authApiSlice.useLoginMutation();
+  const [signUp, { data: signUpData, error: signUpError, isLoading: signUpIsLoading }] =
     authApiSlice.useSignUpMutation();
 
   const { location } = useAppSelector((state) => state.auth);
@@ -97,6 +97,7 @@ const AuthorizationModal: FC<IAuthorizationModal> = ({ setVisible }) => {
               onCancel={onHide}
               onFormTypeChange={onFormTypeChange}
               onSubmit={onSubmit}
+              isLoading={isLoading}
             />
           );
         }
@@ -105,6 +106,7 @@ const AuthorizationModal: FC<IAuthorizationModal> = ({ setVisible }) => {
             onCancel={onHide}
             onFormTypeChange={onFormTypeChange}
             onSubmit={onSubmit}
+            isLoading={signUpIsLoading}
           />
         );
       }}

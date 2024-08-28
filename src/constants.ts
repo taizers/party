@@ -40,3 +40,8 @@ export const waitStatuses = [
   'WAIT_FOR_DELETING',
   'WAIT_FOR_UPDATING',
 ];
+
+export const notFoundTextColor = 'black';
+export const notFoundTitle = '404';
+export const notFoundSubTitle = 'The page you’re looking for doesn’t exist.';
+export const notFoundButtonText = 'Back Home';

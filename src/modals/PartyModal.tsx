@@ -13,9 +13,9 @@ interface PartyModalProps {
 }
 
 const PartyModal: FC<PartyModalProps> = ({ setVisible, party }) => {
-  const [createParty, { data, error }] =
+  const [createParty, { data, error, isLoading }] =
     organizatorApiSlice.useAddPartyPlaceMutation();
-  const [updateParty, { data: updatedData, error: updatedError }] =
+  const [updateParty, { data: updatedData, error: updatedError, isLoading: updatePartyIsLoading }] =
     organizatorApiSlice.useUpdatePartyMutation();
 
   const { data: partyTypes, error: partyTypesError } =
@@ -64,15 +64,17 @@ const PartyModal: FC<PartyModalProps> = ({ setVisible, party }) => {
   };
 
   return (
-    <Dialog
-      visible
-      modal
-      style={{ width: '90%', maxWidth: '800px' }}
-      onHide={onHide}
-      content={() => (
-        partyTypes?.length && <PartyForm party={party} partyTypes={partyTypes} onCancel={onHide} onSubmit={onSubmit} />
-      )}
-    ></Dialog>
+    <>
+      {partyTypes?.length &&<Dialog
+        visible
+        modal
+        style={{ width: '90%', maxWidth: '800px' }}
+        onHide={onHide}
+        content={() => (
+          <PartyForm party={party} isLoading={isLoading || updatePartyIsLoading} partyTypes={partyTypes} onCancel={onHide} onSubmit={onSubmit} />
+        )}
+      ></Dialog>}
+    </>
   );
 };
 

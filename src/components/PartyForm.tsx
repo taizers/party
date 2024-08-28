@@ -14,9 +14,10 @@ interface PartyFormProps {
   onCancel: () => void;
   party?: IParty;
   partyTypes: IShortItem[];
+  isLoading: boolean;
 }
 
-const PartyForm: FC<PartyFormProps> = ({ onSubmit, onCancel, party, partyTypes }) => {
+const PartyForm: FC<PartyFormProps> = ({ onSubmit, onCancel, party, partyTypes, isLoading }) => {
   const [file, setFile] = useState<File>(null!);
 
   return (
@@ -173,12 +174,14 @@ const PartyForm: FC<PartyFormProps> = ({ onSubmit, onCancel, party, partyTypes }
                 disabled={isSubmitting || !isValid || !dirty}
                 type="submit"
                 text
+                loading={isLoading}
                 className="submitButton p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"
               ></Button>
               <Button
                 label="Cancel"
                 onClick={onCancel}
                 text
+                loading={isLoading}
                 className="p-3 w-full text-primary-50 border-1 border-white-alpha-30 hover:bg-white-alpha-10"
               ></Button>
             </div>
