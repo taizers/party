@@ -3,18 +3,24 @@ import { useLocation } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import { useAppSelector } from '../hooks';
-// import { getToken } from '../utils/localStorage.ts';
 
-const PublicRoute: FC = () => {
+interface PrivateRoleRouteProps {
+  role: string;
+}
+
+const PrivateRoleRoute: FC<PrivateRoleRouteProps> = ({ role }) => {
   const { user } = useAppSelector((state) => state.auth);
   const location = useLocation();
-  // const localToken = getToken();
 
-  return !user ? (
+  if (user === null) {
+    return null;
+  }
+
+  return user.name && user?.role === role ? (
     <Outlet />
   ) : (
     <Navigate to="/" state={{ from: location }} replace />
   );
 };
 
-export default PublicRoute;
+export default PrivateRoleRoute;

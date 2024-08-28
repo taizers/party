@@ -1,18 +1,18 @@
-import { DataTable, DataTableValue } from 'primereact/datatable';
+import { DataTable as Table, DataTableValue } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { IAdminTableItemTemplate } from '../types';
+import { IDataTableItemTemplate } from '../types';
 
-interface AdminTableProps<T> {
-  columns: IAdminTableItemTemplate<T>[];
+interface DataTableProps<T> {
+  columns: IDataTableItemTemplate<T>[];
   values: T[];
   title: string;
 }
 
-export default function AdminTable<T>({
+export default function DataTable<T>({
   columns,
   values,
   title,
-}: AdminTableProps<T>) {
+}: DataTableProps<T>) {
   const header = (
     <div className="flex flex-wrap align-items-center justify-content-between gap-2">
       <span className="text-xl text-900 font-bold">{title}</span>
@@ -20,13 +20,13 @@ export default function AdminTable<T>({
   );
 
   return (
-    <DataTable
+    <Table
       value={values as DataTableValue[]}
       size={'small'}
       header={header}
       tableStyle={{ minWidth: '600px' }}
     >
-      {columns.map((item, index) => (
+      {columns?.map((item, index) => (
         <Column
           key={index}
           field={item.field}
@@ -34,6 +34,6 @@ export default function AdminTable<T>({
           body={item.template}
         ></Column>
       ))}
-    </DataTable>
+    </Table>
   );
 }

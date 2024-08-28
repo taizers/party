@@ -2,115 +2,44 @@ import { FC } from 'react';
 import { Form, Formik } from 'formik';
 import { Button } from 'primereact/button';
 import * as Yup from 'yup';
-import { MyTextInput } from './FormsFields';
-
-interface IFormData {
-  title: string;
-  buttonTitle: string;
-  switchButtonTitle: string;
-  fields: {
-    name: string;
-    label: string;
-    type: string;
-    placeholder?: string;
-    initialValue: string;
-    validation: Yup.StringSchema<
-      string | undefined,
-      Yup.AnyObject,
-      undefined,
-      ''
-    >;
-  }[];
-}
-
-type FieldType =
-  | 'name'
-  | 'label'
-  | 'type'
-  | 'placeholder'
-  | 'initialValue'
-  | 'validation';
+import { MyCheckbox, MyTextInput } from './FormsFields';
 
 interface AuthorizationSignUpFormProps {
-  onSubmit: (
-    value: object,
-    setSubmitting: (data: boolean) => void,
-    resetForm: () => void
-  ) => void;
-  onFormTypeChange: (formReset: () => void) => void;
+  onSubmit: (value: object, setSubmitting: (data: boolean) => void) => void;
+  onFormTypeChange: () => void;
   onCancel: () => void;
 }
 
-function getFormValues<T>(formData: IFormData, feild: FieldType) {
-  const obj = {} as {
-    [key in string | number | symbol]:
-      | string
-      | Yup.StringSchema<string | undefined, Yup.AnyObject, undefined, ''>
-      | undefined;
-  };
-
-  formData.fields.forEach((item) => {
-    obj[item.name] = item[feild];
-  });
-
-  return obj as T;
-}
-
-const formData = {
-  title: 'Sign Up',
-  buttonTitle: 'Sign Up',
-  switchButtonTitle: 'I have an account',
-  fields: [
-    {
-      name: 'login',
-      label: 'Login',
-      type: 'text',
-      placeholder: 'Login...',
-      initialValue: '',
-      validation: Yup.string()
-        .max(15, 'Must be 15 characters or less')
-        .required('Required'),
-    },
-    {
-      name: 'email',
-      label: 'Email',
-      type: 'email',
-      placeholder: 'Email...',
-      initialValue: '',
-      validation: Yup.string().email('Invalid email').required('Required'),
-    },
-    {
-      name: 'name',
-      label: 'Name',
-      type: 'text',
-      placeholder: 'Your name...',
-      initialValue: '',
-      validation: Yup.string()
-        .max(20, 'Must be 20 characters or less')
-        .required('Required'),
-    },
-    {
-      name: 'password',
-      label: 'Password',
-      type: 'password',
-      initialValue: '',
-      validation: Yup.string()
-        .min(8, 'Must be 8 characters or more')
-        .max(20, 'Must be 20 characters or less')
-        .required('Required'),
-    },
-    {
-      name: 'confirmpassword',
-      label: 'Confirm password',
-      type: 'password',
-      initialValue: '',
-      validation: Yup.string().oneOf(
-        [Yup.ref('password')],
-        'Passwords must match'
-      ).required('Required'),
-    },
-  ],
-};
+const fields = [
+  {
+    name: 'username',
+    label: 'Username',
+    type: 'text',
+    placeholder: 'Username...',
+  },
+  {
+    name: 'email',
+    label: 'Email',
+    type: 'email',
+    placeholder: 'Email...',
+  },
+  {
+    name: 'age',
+    label: 'Age',
+    type: 'number',
+    placeholder: 'Your age...',
+  },
+  {
+    name: 'password',
+    label: 'Password',
+    type: 'password',
+  },
+  {
+    name: 'confirm_password',
+    label: 'Confirm password',
+    type: 'password',
+  },
+];
 
 const AuthorizationSignUpForm: FC<AuthorizationSignUpFormProps> = ({
   onSubmit,
@@ -119,15 +48,37 @@ const AuthorizationSignUpForm: FC<AuthorizationSignUpFormProps> = ({
 }) => {
   return (
     <Formik
-      initialValues={getFormValues<object>(formData, 'initialValue')}
-      validationSchema={Yup.object(
-        getFormValues<Yup.ObjectShape>(formData, 'validation')
-      )}
-      onSubmit={(values, { setSubmitting, resetForm }) => {
-        onSubmit(values, setSubmitting, resetForm);
+      initialValues={{
+        organizer: false,
+        username: '',
+        email: '',
+        age: '',
+        password: '',
+        confirm_password: '',
+      }}
+      validationSchema={Yup.object({
+        organizer: Yup.boolean(),
+        username: Yup.string()
+          .max(25, 'Must be 25 characters or less')
+          .required('Required'),
+        email: Yup.string().email('Invalid email').required('Required'),
+        age: Yup.number()
+          .min(16, 'Must be more then 16')
+          .max(110, 'Must be less then 110')
+          .required('Required'),
+        password: Yup.string()
+          .min(8, 'Must be 8 characters or more')
+          .max(20, 'Must be 20 characters or less')
+          .required('Required'),
+        confirm_password: Yup.string()
+          .oneOf([Yup.ref('password')], 'Passwords must match')
+          .required('Required'),
+      })}
+      onSubmit={(values, { setSubmitting }) => {
+        onSubmit(values, setSubmitting);
       }}
     >
-      {({ isValid, isSubmitting, dirty, resetForm }) => (
+      {({ isValid, isSubmitting, dirty }) => (
         <Form
           className="flex flex-column px-6 py-5 gap-2 overflow-y-auto"
           style={{
@@ -136,13 +87,13 @@ const AuthorizationSignUpForm: FC<AuthorizationSignUpFormProps> = ({
               'radial-gradient(circle at left top, var(--primary-400), var(--primary-700))',
           }}
         >
-          <p
+          <h3
             style={{ fontSize: '20px' }}
             className="text-primary-50 font-semibold align-self-center"
           >
-            {formData.title}
-          </p>
-          {formData.fields.map((item, index) => (
+            {'Sign Up'}
+          </h3>
+          {fields.map((item, index) => (
             <MyTextInput
               key={index}
               label={item.label}
@@ -151,9 +102,10 @@ const AuthorizationSignUpForm: FC<AuthorizationSignUpFormProps> = ({
               placeholder={item.placeholder}
             />
           ))}
+          <MyCheckbox name={'organizer'}>{'Are you Organizer?'}</MyCheckbox>
           <div className="flex align-items-center gap-2">
             <Button
-              label={formData.buttonTitle}
+              label={'Sign Up'}
               disabled={isSubmitting || !isValid || !dirty}
               type="submit"
               text
@@ -169,10 +121,10 @@ const AuthorizationSignUpForm: FC<AuthorizationSignUpFormProps> = ({
           <Button
             style={{ height: '20px' }}
             onClick={() => {
-              onFormTypeChange(resetForm);
+              onFormTypeChange();
             }}
             type="button"
-            label={formData.switchButtonTitle}
+            label={'I have an account'}
           />
         </Form>
       )}

@@ -7,22 +7,16 @@ export const getUserFromToken = (token: string) => {
 
     const currentDate = new Date();
 
-    if (currentDate < payload.exp) {
-      const roles = payload.realm_access?.roles?.filter((item: string) => {
-        const words = item.split('_');
-
-        if (words[words.length - 1] === 'REALM') {
-          return true;
-        }
-      });
+    if (currentDate > payload.exp) {
+      const role = payload.realm_access?.roles?.find(
+        (item: string) =>
+          item === 'ORGANIZER' || item === 'ADMIN' || item === 'USER'
+      );
 
       return {
-        name: payload.name,
-        login: payload.preferred_username,
+        name: payload.preferred_username,
         email: payload.email,
-        given_name: payload.given_name,
-        family_name: payload.family_name,
-        roles,
+        role,
       };
     } else {
       clearToken();
@@ -33,4 +27,16 @@ export const getUserFromToken = (token: string) => {
       clearToken();
     }
   }
+};
+
+export const storeCity = async (
+  lat: number,
+  lon: number,
+  setCity: (dat: string) => void
+) => {
+  const response = await fetch(
+    `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&extratags=1`
+  ).then((response) => response.json());
+
+  setCity(response?.address?.state);
 };

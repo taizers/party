@@ -7,93 +7,72 @@ export interface useGetQueryResponce<T> {
   isLoading: boolean;
 }
 
-interface IPhoto {
-  photoPath: string;
-}
-
 export interface IShortItem {
   id: number;
   name: string;
 }
 
-export interface IComment {
+export interface IGuest {
   id: number;
-  text: string;
-  grade: number;
-  user: IShortItem;
+  username: string;
+  age: number;
 }
-
-interface IPlaceDTOResponse extends IFishPlaceListItem {
-  description: string;
-  owner: boolean | null;
-  fish: IShortItem[];
-  comments: IComment[];
+export interface IGuestRequest {
+  id: number;
+  username: string;
+  status: string;
+  age: number;
 }
-
-interface ITimeToCatchFish {
-  afternoon: number;
-  morning: number;
-  evening: number;
-}
-
-interface IWeatherPlaceDTOResponse {
-  tempMax: string;
-  tempMin: string;
-  temp: string;
-  sunRise: string;
-  sunSet: string;
-}
-
-export interface IPlace {
-  placeDTOResponse: IPlaceDTOResponse;
-  timeToCatchFish: ITimeToCatchFish;
-  weatherPlaceDTOResponse: IWeatherPlaceDTOResponse;
-}
-
-export interface IFishPlaceListItem {
+export interface IParty {
   id: number;
   name: string;
+  type: string;
+  city: string;
+  statusOfParticipationRequest: string;
+  organizerUsername: string;
+  ageRestriction: number;
+  guests: IGuest[];
+  countOfPlaces: number;
+  description: string;
   coordinates: string;
-  requirePayment: boolean;
-  typePlace: IShortItem;
-  photos: IPhoto[];
+  minimalRating: number;
+  ticketCost: number;
+  dateOfEvent: string;
 }
 
-export interface INews {
+export interface IPartyListItem {
   id: number;
-  title: string;
-  annotation: string;
-  text: string;
-  photos: IPhoto[];
-}
-export interface INewsItem {
-  id: number;
-  title: string;
-  annotation: string;
-  isAlarm: boolean;
-  photos: IPhoto[];
+  name: string;
+  type: string;
+  organizerUsername: string;
+  ageRestriction: number;
+  ticketCost: number;
+  dateOfEvent: string;
 }
 
-export interface IAdminItem {
+interface ITableItemParty {
   id: number;
-  title: string;
-  user: IShortItem;
+  name: string;
+  type: string;
+  ageRestriction: number;
+  countOfPlaces: number;
+  ticketCost: number;
+  dateOfEvent: string;
   status: string;
 }
-
-export interface IAdminPalce extends IAdminItem {
-  typePlace: string;
-}
-export interface IAdminComment {
+export interface IOrganizatorsParty extends ITableItemParty {
   id: number;
-  title: string;
-  user: IShortItem;
-  grade: number;
+}
+export interface IAdminsParty extends ITableItemParty {
+  organizerUsername: string;
+}
+export interface IUsersParty extends ITableItemParty {
+  organizerUsername: string;
 }
 
 export interface IResponcePaginatedData<T> {
-  itemCounts: number;
-  items: T[];
+  totalElements: number;
+  content: T[];
 }
 
 export interface fileResponse {

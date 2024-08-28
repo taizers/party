@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import PlaceItem from '../components/PlaceItem';
-import PlacesList from '../components/PlacesList';
+import PartyItem from '../components/PartyItem';
+import PartiesList from '../components/PartiesList';
 
-const Places = () => {
+const Parties = () => {
   const [currentListItem, setCurrentListItem] = useState<
     number | string | null
   >(null);
@@ -17,10 +17,13 @@ const Places = () => {
         overflowY: 'auto',
       }}
     >
-      <PlacesList currentListItem={currentListItem} setCurrentListItem={setCurrentListItem} />
-      <PlaceItem currentListItem={currentListItem} />
+      <PartiesList
+        currentListItem={currentListItem}
+        setCurrentListItem={setCurrentListItem}
+      />
+      <PartyItem currentListItem={currentListItem} />
     </div>
   );
 };
 
-export default Places;
+export default Parties;

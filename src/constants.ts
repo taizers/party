@@ -1,5 +1,5 @@
 export const TOKEN_KEY = 'access_token';
-export const apiUrl = '';
+export const apiUrl = 'https://gs';
 export const defaultDelay = 500;
 export const defaultCurrentPage = 0;
 
@@ -25,16 +25,18 @@ export const responsiveOptions = [
   },
 ];
 
-export const adminRole = 'ADMIN_REALM';
-export const moderatorRole = 'MODERATOR_REALM';
-export const authorRole = 'AUTHOR_REALM';
-export const journalistRole = 'JOURNALIST_REALM';
-export const userRole = 'USER_REALM';
+export const adminRole = 'ADMIN';
+export const userRole = 'USER';
+export const organizatorRole = 'ORGANIZER';
 
 export const roleLabels = {
-  moderatorRole: 'moderator',
-  authorRole: 'author',
   userRole: 'user',
   adminRole: 'admin',
-  journalistRole: 'journalist',
+  organizatorRole: 'organizator',
 };
+
+export const waitStatuses = [
+  'WAIT_FOR_CREATING',
+  'WAIT_FOR_DELETING',
+  'WAIT_FOR_UPDATING',
+];

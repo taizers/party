@@ -1,21 +1,26 @@
 import { useEffect, FC } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useAppDispatch } from './hooks';
-import { setUserData, setUserToken } from './store/reducers/AuthSlice';
+import {
+  setUserData,
+  setUserToken,
+  setUserLocation,
+} from './store/reducers/AuthSlice';
 import { getToken } from './utils/localStorage';
 import LayOut from './components/Layout';
-import PublicRoute from './components/PublicRoute';
-import PrivateRoute from './components/PrivateRoute';
 import NotFound from './pages/NotFound';
-import AdminPanel from './pages/AdminPanel';
-import News from './pages/News';
-import Places from './pages/Places';
+import Parties from './pages/Parties';
 import './App.css';
-import { getUserFromToken } from './utils';
-import NewsItem from './pages/NewsItem';
-import NewsAdminItem from './pages/NewsAdminItem';
-import PlaceAdmin from './pages/PlaceAdmin';
-import PrivateAdminRoute from './components/PrivateAdminRoute';
+import { storeCity, getUserFromToken } from './utils';
+import OrganizatorsParties from './pages/OrganizatorsParties';
+import AdminsParties from './pages/AdminsParties';
+import AdminParty from './pages/AdminParty';
+import UserParties from './pages/UserParties';
+import UsersParty from './pages/UsersParty';
+import OrganizatorsParty from './pages/OrganizatorsParty';
+import { adminRole, organizatorRole, userRole } from './constants';
+import PrivateRoleRoute from './components/PrivateRoleRoute';
+import { createToast } from './utils/toasts';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -37,27 +42,42 @@ const App: FC = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        storeCity(
+          position.coords.latitude,
+          position.coords.longitude,
+          (data: string) => dispatch(setUserLocation(data))
+        );
+      });
+    } else {
+      createToast.error('Geolocation is not available in your browser.');
+    }
+  }, []);
+
   return (
     <Routes>
       <Route path={'/'} element={<LayOut />}>
         {/* public routes */}
-        <Route index element={<Places />} />
+        <Route index element={<Parties />} />
 
-        <Route element={<PublicRoute />}>
-          {/* <Route path={'login'} element={<Login />} /> */}
-          {/* <Route path={'signup'} element={<SignUp />} /> */}
+        <Route element={<PrivateRoleRoute role={adminRole} />}>
+          <Route path={'admin'} element={<AdminsParties />} />
+          <Route path={'admin/parties/:id'} element={<AdminParty />} />
+        </Route>
+        
+        <Route element={<PrivateRoleRoute role={userRole} />}>
+          <Route path={'user'} element={<UserParties />} />
+          <Route path={'user/parties/:id'} element={<UsersParty />} />
         </Route>
 
-        {/* protected routes */}
-        <Route element={<PrivateRoute />}>
-          <Route path={'news'} element={<News />} />
-          <Route path={'news/:id'} element={<NewsItem />} />
-        </Route>
-
-        <Route element={<PrivateAdminRoute />}>
-          <Route path={'admin'} element={<AdminPanel />} />
-          <Route path={'admin/place/:id'} element={<PlaceAdmin />} />
-          <Route path={'admin/news/:id'} element={<NewsAdminItem />} />
+        <Route element={<PrivateRoleRoute role={organizatorRole} />}>
+          <Route path={'organizator'} element={<OrganizatorsParties />} />
+          <Route
+            path={'organizator/parties/:id'}
+            element={<OrganizatorsParty />}
+          />
         </Route>
 
         {/* Not Found route */}

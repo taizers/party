@@ -1,11 +1,9 @@
 import { useField } from 'formik';
-import { Dropdown } from 'primereact/dropdown';
+import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { FloatLabel } from 'primereact/floatlabel';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { MultiSelect } from 'primereact/multiselect';
 import { ReactNode } from 'react';
-import { IShortItem } from '../types/responce';
 
 interface IFormikProps {
   id?: string;
@@ -23,13 +21,9 @@ interface IMyTextInput extends IFormikProps {
   label: string;
 }
 interface IMySelect extends IFormikProps {
-  optionLabel: string;
-  options: IShortItem[];
-}
-interface IMyMultiSelect extends IFormikProps {
-  optionLabel: string;
-  options: IShortItem[];
-  maxSelectedLabels: number;
+  options: string[];
+  value?: string;
+  setFieldValue: (data: unknown) => void;
 }
 
 interface IMyCheckBox extends IFormikProps {
@@ -109,27 +103,27 @@ export const MyCheckbox = ({ children, style, ...props }: IMyCheckBox) => {
   );
 };
 
-export const MySelect = ({ style, ...props }: IMySelect) => {
-  const [field, meta] = useField({ ...props, type: 'checkbox' });
+export const MySelect = ({
+  style,
+  setFieldValue,
+  value,
+  ...props
+}: IMySelect) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_field, meta] = useField({ ...props });
 
-  const error = meta.error as { name?: string };
+  const onChange = (e: DropdownChangeEvent) => {
+    setFieldValue(e.value);
+  };
 
   return (
     <div style={{ marginBottom: '10px', width: '100%', ...style }}>
-      <Dropdown style={{ width: '100%' }} {...field} {...props} />
-      {meta.touched && error?.name ? (
-        <div style={{ alignSelf: 'center' }} className="field-error">
-          {error?.name}
-        </div>
-      ) : null}
-    </div>
-  );
-};
-export const MyMultiSelect = ({ style, ...props }: IMyMultiSelect) => {
-  const [field, meta] = useField({ ...props, type: 'checkbox' });
-  return (
-    <div style={{ marginBottom: '10px', width: '100%', ...style }}>
-      <MultiSelect style={{ width: '100%' }} {...field} {...props} />
+      <Dropdown
+        value={value}
+        onChange={onChange}
+        style={{ width: '100%' }}
+        {...props}
+      />
       {meta.touched && meta.error ? (
         <div style={{ alignSelf: 'center' }} className="field-error">
           {meta.error}

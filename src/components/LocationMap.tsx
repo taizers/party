@@ -1,20 +1,16 @@
 import { FC } from 'react';
 import { LatLngExpression } from 'leaflet';
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMapEvents,
-} from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import { ICords } from '../types';
 
 interface LocationMapProps {
   setCords: (data: ICords) => void;
-  cords: ICords;
+  cords: string;
 }
 
 const LocationMap: FC<LocationMapProps> = ({ setCords, cords }) => {
+  const coordinates = cords ? cords?.split(',').map((item) => +item) : null;
+
   function LocationMarker() {
     const map = useMapEvents({
       click(e) {
@@ -23,17 +19,15 @@ const LocationMap: FC<LocationMapProps> = ({ setCords, cords }) => {
       },
     });
 
-    return cords === null ? null : (
-      <Marker position={cords as LatLngExpression}>
-        <Popup>You are here</Popup>
-      </Marker>
+    return coordinates === null ? null : (
+      <Marker position={coordinates as LatLngExpression}></Marker>
     );
   }
 
   return (
     <div style={{ margin: '0 auto' }}>
       <MapContainer
-        center={[53.9, 27.55]}
+        center={(coordinates as LatLngExpression) || [53.9, 27.55]}
         zoom={13}
         scrollWheelZoom={true}
         style={{ height: '300px' }}

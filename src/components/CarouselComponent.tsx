@@ -5,7 +5,7 @@ import { useResponsive } from '../hooks';
 
 interface CarouselComponentProps {
   values: unknown[];
-  template: (item: any) => ReactNode;
+  template: (item: unknown) => ReactNode;
 }
 
 const CarouselComponent: FC<CarouselComponentProps> = ({

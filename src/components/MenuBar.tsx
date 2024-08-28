@@ -4,7 +4,7 @@ import { MenuItem } from 'primereact/menuitem';
 import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../hooks';
-import { adminRole, moderatorRole } from '../constants';
+import { adminRole, organizatorRole, userRole } from '../constants';
 
 interface IMEnuBar {
   setLoginDialogVisible: (data: boolean) => void;
@@ -17,7 +17,7 @@ const MenuBar: FC<IMEnuBar> = ({ setLoginDialogVisible, child }) => {
 
   const end = (
     <div className="flex align-items-center gap-2">
-      {user === null || !user.login ? (
+      {user === null || !user.name ? (
         <Button
           label="Login"
           icon="pi pi-user"
@@ -37,18 +37,21 @@ const MenuBar: FC<IMEnuBar> = ({ setLoginDialogVisible, child }) => {
     },
   ];
 
-  if (user?.login) {
+  if (user?.role === organizatorRole) {
     items.push({
-      label: 'News',
-      icon: 'pi pi-table',
-      command: () => history('/news'),
+      label: 'Organizator toolbar',
+      icon: 'pi pi-home',
+      command: () => history('/organizator'),
     });
   }
-
-  if (
-    user?.roles?.includes(adminRole) ||
-    user?.roles?.includes(moderatorRole)
-  ) {
+  if (user?.role === userRole) {
+    items.push({
+      label: 'User toolbar',
+      icon: 'pi pi-star',
+      command: () => history('/user'),
+    });
+  }
+  if (user?.role === adminRole) {
     items.push({
       label: 'Admin toolbar',
       icon: 'pi pi-star',
@@ -58,7 +61,7 @@ const MenuBar: FC<IMEnuBar> = ({ setLoginDialogVisible, child }) => {
 
   return (
     <div style={{ height: '100%' }}>
-      <Menu  className="menu-bar" model={items} end={end} />
+      <Menu className="menu-bar" model={items} end={end} />
       <div className="app-item">{child}</div>
     </div>
   );
