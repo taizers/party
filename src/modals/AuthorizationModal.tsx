@@ -72,7 +72,7 @@ const AuthorizationModal: FC<IAuthorizationModal> = ({ setVisible }) => {
   };
 
   const onSubmit = (
-    values: { confirmpassword?: string },
+    values: { confirm_password?: string },
     setSubmitting: (data: boolean) => void
   ) => {
     refSubmitting.current = setSubmitting;
@@ -80,7 +80,7 @@ const AuthorizationModal: FC<IAuthorizationModal> = ({ setVisible }) => {
     if (formValue === 'login') {
       login(values);
     } else {
-      delete values.confirmpassword;
+      delete values.confirm_password;
       signUp({ ...values, city: location });
     }
   };
