@@ -8,6 +8,7 @@ import { setToken } from '../utils/localStorage';
 import { createToast } from '../utils/toasts';
 import AuthorizationSignUpForm from '../components/AuthorzationSignUpForm';
 import AuthorizationLoginForm from '../components/AuthorzationLoginForm';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface IAuthorizationModal {
   setVisible: (data: boolean) => void;
@@ -19,9 +20,13 @@ const AuthorizationModal: FC<IAuthorizationModal> = ({ setVisible }) => {
   const [signUp, { data: signUpData, error: signUpError, isLoading: signUpIsLoading }] =
     authApiSlice.useSignUpMutation();
 
+  const history = useNavigate();
+  const routeLocation = useLocation();
+  const dispatch = useAppDispatch();
   const { location } = useAppSelector((state) => state.auth);
 
-  const dispatch = useAppDispatch();
+  const params = new URLSearchParams(routeLocation.search);
+  const from = params.get("from") || "/";
 
   const refSubmitting = useRef<(data: boolean) => void>(null!);
 
@@ -57,6 +62,7 @@ const AuthorizationModal: FC<IAuthorizationModal> = ({ setVisible }) => {
         setToken(data.access_token);
         dispatch(setUserToken(data.access_token));
         dispatch(setUserData(user));
+        history(from);
       }
 
       onHide();

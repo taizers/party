@@ -20,10 +20,11 @@ import moment from 'moment';
 import { adminApiSlice } from '../store/reducers/AdminApiSlice';
 import { IDataTableItemTemplate } from '../types';
 import Loader from '../components/Loader';
+import { defaultPaginationLimit, defaultPaginationPage } from '../constants';
 
 const AdminsParties: FC = () => {
-  const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(10);
+  const [page, setPage] = useState<number>(defaultPaginationPage);
+  const [limit, setLimit] = useState<number>(defaultPaginationLimit);
   const { data, error, isLoading } = adminApiSlice.useGetAdminPartiesListQuery<
     useGetQueryResponce<IResponcePaginatedData<IAdminsParty>>
   >({

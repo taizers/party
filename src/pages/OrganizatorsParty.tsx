@@ -19,12 +19,15 @@ import GuestsList from '../components/GuestsList';
 import GuestItem from '../components/GuestItem';
 import GuestRequestItem from '../components/GuestRequestItem';
 import Loader from '../components/Loader';
+import { defaultPaginationPage, defaultPaginationLimit } from '../constants';
 
 const OrganizatorsParty: FC = () => {
   const { id } = useParams();
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
-  const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(10);
+  const [page, setPage] = useState<number>(defaultPaginationPage);
+  const [limit, setLimit] = useState<number>(defaultPaginationLimit);
+  const [guestsPage, setGuestsPage] = useState<number>(defaultPaginationPage);
+  const [guestsLimit, setGuestsLimit] = useState<number>(defaultPaginationLimit);
 
   const { data, error, isLoading } =
     organizatorApiSlice.useGetOrganiatorsPartyQuery<
@@ -34,6 +37,10 @@ const OrganizatorsParty: FC = () => {
     organizatorApiSlice.useGetGuestsRequestsQuery<
       useGetQueryResponce<IResponcePaginatedData<IGuestRequest>>
     >({id, page, limit});
+  const { data: guests, error: guestsError } =
+    organizatorApiSlice.useGetPartyGuestsQuery<
+      useGetQueryResponce<IResponcePaginatedData<IGuest>>
+    >({id, page, limit});
 
   const [
     sendParticipation,
@@ -42,15 +49,14 @@ const OrganizatorsParty: FC = () => {
 
   useShowErrorToast(error);
   useShowErrorToast(guestsRequestsError);
+  useShowErrorToast(participationError);
+  useShowErrorToast(guestsError);
 
   useEffect(() => {
     if (participationData) {
       createToast.success('Updated');
     }
   }, [participationData]);
-
-  useShowErrorToast(error);
-  useShowErrorToast(participationError);
 
   return (
     <>
@@ -80,10 +86,15 @@ const OrganizatorsParty: FC = () => {
             )}
           </div>
           <PartyInfo party={data} />
-          {data.guests?.length && (
+          {guests?.content.length && (
             <GuestsList<IGuest>
               title={'Guests'}
-              items={data.guests}
+              items={guests.content}
+              pagination={{
+                page: { current: guestsPage, setPage: setGuestsPage },
+                limit: { current: guestsLimit, setLimit: setGuestsLimit },
+                totalElements: guests.totalElements,
+              }}
               renderItem={(guest, index) => (
                 <GuestItem key={index} guest={guest} />
               )}
@@ -93,9 +104,11 @@ const OrganizatorsParty: FC = () => {
             <GuestsList<IGuestRequest>
               title={'Guests Requests'}
               items={guestsRequests.content}
-              page={{ current: page, setPage }}
-              limit={{ current: limit, setLimit }}
-              totalElements={guestsRequests.totalElements}
+              pagination={{
+                page: { current: page, setPage },
+                limit: { current: limit, setLimit },
+                totalElements: guestsRequests.totalElements,
+              }}
               renderItem={(request, index) => (
                 <GuestRequestItem
                   updateStatus={sendParticipation}

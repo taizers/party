@@ -5,9 +5,11 @@ interface GuestsListProps<T> {
   items: T[];
   renderItem: (item: T, index?: number) => React.ReactNode;
   title: string;
-  page?: { current: number, setPage: (data: number) => void };
-  limit?: { current: number, setLimit: (data: number) => void };
-  totalElements?: number;
+  pagination?: {
+    page: { current: number, setPage: (data: number) => void };
+    limit: { current: number, setLimit: (data: number) => void };
+    totalElements: number;
+  },
 }
 
 export default function GuestsList<T>(props: GuestsListProps<T>) {
@@ -34,10 +36,10 @@ export default function GuestsList<T>(props: GuestsListProps<T>) {
       >
         {props.items?.map(props.renderItem)}
       </div>
-      {props.page && props.limit && <PaginationComponent
-        page={props.page}
-        limit={props.limit}
-        itemsCount={props.totalElements || 1}
+      {props.pagination && <PaginationComponent
+        page={props.pagination.page}
+        limit={props.pagination.limit}
+        itemsCount={props.pagination.totalElements || 1}
       />}
     </div>
   );

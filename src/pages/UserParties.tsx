@@ -22,10 +22,11 @@ import moment from 'moment';
 import { userApiSlice } from '../store/reducers/UserApiSlice';
 import { IDataTableItemTemplate } from '../types';
 import Loader from '../components/Loader';
+import { defaultPaginationLimit, defaultPaginationPage } from '../constants';
 
 const UserParties: FC = () => {
-  const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(10);
+  const [page, setPage] = useState<number>(defaultPaginationPage);
+  const [limit, setLimit] = useState<number>(defaultPaginationLimit);
   const { data, error, isLoading } = partiesApiSlice.useGetPartiesListQuery<
     useGetQueryResponce<IResponcePaginatedData<IUsersParty>>
   >({

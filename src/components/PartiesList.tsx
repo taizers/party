@@ -11,6 +11,7 @@ import {
 // import { listOfPartiesMock } from '../mocks';
 import NoData from './NoData';
 import Loader from './Loader';
+import { defaultPaginationLimit, defaultPaginationPage } from '../constants';
 
 interface PartiesListProps {
   setCurrentListItem: (id: string | number) => void;
@@ -21,8 +22,8 @@ const PartiesList: FC<PartiesListProps> = ({
   setCurrentListItem,
   currentListItem,
 }) => {
-  const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(10);
+  const [page, setPage] = useState<number>(defaultPaginationPage);
+  const [limit, setLimit] = useState<number>(defaultPaginationLimit);
 
   const { location } = useAppSelector((state) => state.auth);
 

@@ -22,10 +22,11 @@ import PartyModal from '../modals/PartyModal';
 import { Button } from 'primereact/button';
 import { IDataTableItemTemplate } from '../types';
 import Loader from '../components/Loader';
+import { defaultPaginationLimit, defaultPaginationPage } from '../constants';
 
 const OrganizatorsParties: FC = () => {
-  const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(10);
+  const [page, setPage] = useState<number>(defaultPaginationPage);
+  const [limit, setLimit] = useState<number>(defaultPaginationLimit);
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const { data, error, isLoading } =
     organizatorApiSlice.useGetOrganizatorsPartiesListQuery<
@@ -37,6 +38,8 @@ const OrganizatorsParties: FC = () => {
   const [deleteParty, { data: deleteData, error: deleteError }] =
     organizatorApiSlice.useDeletePartyMutation();
 
+  const history = useNavigate();
+
   useShowErrorToast(error);
   useShowErrorToast(deleteError);
 
@@ -45,8 +48,6 @@ const OrganizatorsParties: FC = () => {
       createToast.success('Deleted');
     }
   }, [deleteData]);
-
-  const history = useNavigate();
 
   const onDelete = (id: number) => {
     deleteParty(id);

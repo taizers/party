@@ -42,6 +42,12 @@ export const organizatorApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ['ParticipationRequest'],
     }),
+    getPartyGuests: builder.query({
+      query: ({ id, page, limit }) => ({
+        url: `/organizer/party/${id}/guests?page=${page}&size=${limit}`,
+      }),
+      providesTags: ['ParticipationRequest'],
+    }),
     updateParty: builder.mutation({
       query: ({ id, data }) => ({
         url: `/organizer/party/${id}`,

@@ -1,7 +1,11 @@
 import { clearToken } from './localStorage';
 import { createToast } from './toasts';
 
-export const getUserFromToken = (token: string) => {
+export const getUserFromToken = (token?: string | null) => {
+  if (!token) {
+    return {};
+  }
+  
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
     const currentDate = new Date();
@@ -17,13 +21,16 @@ export const getUserFromToken = (token: string) => {
         email: payload.email,
         role,
       };
-    } else {
-      clearToken();
     }
+
+    clearToken();
+    return {};
   } catch (err) {
     if (err) {
       createToast.error('Invalid Token');
+
       clearToken();
+      return {};
     }
   }
 };
