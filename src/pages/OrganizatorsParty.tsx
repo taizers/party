@@ -4,11 +4,12 @@ import {
   IGuest,
   IGuestRequest,
   IParty,
+  IResponcePaginatedData,
   useGetQueryResponce,
 } from '../types/responce';
 import { useShowErrorToast } from '../hooks';
 import PartyInfo from '../components/PartyInfo';
-// import { partyMock } from '../mocks';
+// import { partyMock, guestsRequestsMock } from '../mocks';
 import { Button } from 'primereact/button';
 import { organizatorApiSlice } from '../store/reducers/OrganizatorApiSlice';
 import PartyModal from '../modals/PartyModal';
@@ -22,6 +23,8 @@ import Loader from '../components/Loader';
 const OrganizatorsParty: FC = () => {
   const { id } = useParams();
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(10);
 
   const { data, error, isLoading } =
     organizatorApiSlice.useGetOrganiatorsPartyQuery<
@@ -29,8 +32,8 @@ const OrganizatorsParty: FC = () => {
     >(id);
   const { data: guestsRequests, error: guestsRequestsError } =
     organizatorApiSlice.useGetGuestsRequestsQuery<
-      useGetQueryResponce<IGuestRequest[]>
-    >(id);
+      useGetQueryResponce<IResponcePaginatedData<IGuestRequest>>
+    >({id, page, limit});
 
   const [
     sendParticipation,
@@ -86,10 +89,13 @@ const OrganizatorsParty: FC = () => {
               )}
             />
           )}
-          {guestsRequests?.length && (
+          {guestsRequests?.content?.length && (
             <GuestsList<IGuestRequest>
               title={'Guests Requests'}
-              items={guestsRequests}
+              items={guestsRequests.content}
+              page={{ current: page, setPage }}
+              limit={{ current: limit, setLimit }}
+              totalElements={guestsRequests.totalElements}
               renderItem={(request, index) => (
                 <GuestRequestItem
                   updateStatus={sendParticipation}

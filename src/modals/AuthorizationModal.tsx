@@ -72,7 +72,7 @@ const AuthorizationModal: FC<IAuthorizationModal> = ({ setVisible }) => {
   };
 
   const onSubmit = (
-    values: { confirm_password?: string },
+    values: object,
     setSubmitting: (data: boolean) => void
   ) => {
     refSubmitting.current = setSubmitting;

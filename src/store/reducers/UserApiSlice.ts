@@ -10,10 +10,9 @@ export const userApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ['UserParty'],
     }),
     setPartyGrade: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `/rate/${id}`,
-        method: 'POST',
-        body: data,
+      query: ({ id, rate }) => ({
+        url: `/person/rate/party/${id}?rate=${rate}`,
+        method: 'PATCH',
       }),
       invalidatesTags: ['UserParty'],
     }),

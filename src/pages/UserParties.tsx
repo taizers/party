@@ -57,8 +57,8 @@ const UserParties: FC = () => {
   const onOpen = (id: number) => {
     history(`/user/parties/${id}`);
   };
-  const setGradeOpen = (id: number, grade: number) => {
-    setGrade({ id, data: { rate: grade } });
+  const setGradeOpen = (id: number, rate: number) => {
+    setGrade({ id, rate });
   };
 
   const columns = [

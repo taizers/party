@@ -12,10 +12,10 @@ export const organizatorApiSlice = apiSlice.injectEndpoints({
     }),
     participationResponse: builder.mutation({
       query: ({ id, data }) => ({
-        url: `/organizer/request/${id}?flag=${data}`, //request id
+        url: `/organizer/request/${id}?flag=${data}`,
         method: 'POST',
       }),
-      invalidatesTags: ['OrganizatorParty'],
+      invalidatesTags: ['ParticipationRequest'],
     }),
     deleteParty: builder.mutation({
       query: (id) => ({
@@ -34,13 +34,13 @@ export const organizatorApiSlice = apiSlice.injectEndpoints({
       query: (id) => ({
         url: `/organizer/my-party/${id}`,
       }),
-      providesTags: ['OrganizatorParty'],
+      providesTags: ['OrganizatorParty', 'ParticipationRequest'],
     }),
     getGuestsRequests: builder.query({
-      query: (id) => ({
-        url: `/organizer/participation-requests/${id}`,
+      query: ({ id, page, limit }) => ({
+        url: `/organizer/party/${id}/requests?page=${page}&size=${limit}`,
       }),
-      providesTags: ['OrganizatorParty'],
+      providesTags: ['ParticipationRequest'],
     }),
     updateParty: builder.mutation({
       query: ({ id, data }) => ({

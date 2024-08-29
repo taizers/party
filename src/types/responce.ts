@@ -20,8 +20,8 @@ export interface IGuest {
 export interface IGuestRequest {
   id: number;
   username: string;
-  status: string;
   age: number;
+  rate: number;
 }
 export interface IParty {
   id: number;

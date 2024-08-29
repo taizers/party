@@ -7,7 +7,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         url: `/place/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['AdminParty'],
+      invalidatesTags: ['AdminParty', 'Party'],
     }),
     getAdminPartiesList: builder.query({
       query: ({ page, limit }) => ({
@@ -26,7 +26,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         url: `/admin/request/${id}?flag=${data}`,
         method: 'POST',
       }),
-      invalidatesTags: ['AdminParty'],
+      invalidatesTags: ['AdminParty', 'Party'],
     }),
   }),
 });
