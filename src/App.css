@@ -4,6 +4,10 @@ div.field-error {
     margin-top: 1px;
 }
 
+.leaflet-control-attribution leaflet-control {
+    display: none;
+}
+
 ::-webkit-scrollbar {
     width: 17px;
 }
@@ -59,3 +63,5 @@ div.field-error {
         flex-direction: column;
     }
 }
+
+

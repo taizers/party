@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import PartyListItem from './PartiesListItem';
 import PaginationComponent from './Pagination';
 import { partiesApiSlice } from '../store/reducers/PartiesApiSlice';
@@ -8,10 +8,10 @@ import {
   IResponcePaginatedData,
   useGetQueryResponce,
 } from '../types/responce';
-// import { listOfPartiesMock } from '../mocks';
 import NoData from './NoData';
 import Loader from './Loader';
 import { defaultPaginationLimit, defaultPaginationPage } from '../constants';
+import SearchBar from './SearchBar.tsx';
 
 interface PartiesListProps {
   setCurrentListItem: (id: string | number) => void;
@@ -24,6 +24,9 @@ const PartiesList: FC<PartiesListProps> = ({
 }) => {
   const [page, setPage] = useState<number>(defaultPaginationPage);
   const [limit, setLimit] = useState<number>(defaultPaginationLimit);
+  const [total, setTotal] = useState<number>(0);
+  const [currentParties, setCurrentParties] = useState<IPartyListItem[]>([]);
+  const [search, setSearch] = useState<string>('');
 
   const { location } = useAppSelector((state) => state.auth);
 
@@ -34,6 +37,22 @@ const PartiesList: FC<PartiesListProps> = ({
     limit,
     city: location,
   });
+
+  useEffect(() => {
+    if (search === '') {
+      setCurrentParties(data?.content || []);
+      setTotal(data?.totalElements || 0);
+      return;
+    }
+
+    const newData = data?.content?.filter(item =>
+      item.type.toLowerCase().includes(search.toLowerCase()) ||
+      item.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    setCurrentParties(newData);
+    setTotal(newData?.length);
+  }, [search, data]);
 
   useShowErrorToast(error);
 
@@ -50,6 +69,15 @@ const PartiesList: FC<PartiesListProps> = ({
         boxShadow: '1px 8px 25px 7px rgba(34, 60, 80, 0.2) inset',
       }}
     >
+      {!!currentParties.length &&
+        <div
+          style={{
+            alignSelf: 'center',
+          }}
+        >
+          <SearchBar search={search} setSearch={setSearch} />
+        </div>
+      }
       <div
         style={{
           flexGrow: 1,
@@ -58,7 +86,7 @@ const PartiesList: FC<PartiesListProps> = ({
           gap: '5px',
         }}
       >
-        {data?.content?.map((item, index) => (
+        {currentParties?.map((item, index) => (
           <PartyListItem
             currentListItem={currentListItem}
             onItemClick={setCurrentListItem}
@@ -69,11 +97,13 @@ const PartiesList: FC<PartiesListProps> = ({
         {!data && !isLoading && <NoData color="white" />}
         {isLoading && <Loader />}
       </div>
-      <PaginationComponent
-        page={{ current: page, setPage }}
-        limit={{ current: limit, setLimit }}
-        itemsCount={data?.totalElements || 1}
-      />
+      {!!total && (
+        <PaginationComponent
+          page={{ current: page, setPage }}
+          limit={{ current: limit, setLimit }}
+          itemsCount={total}
+        />
+      )}
     </div>
   );
 };

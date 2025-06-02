@@ -4,7 +4,6 @@ import { partiesApiSlice } from '../store/reducers/PartiesApiSlice';
 import { useAppSelector, useShowErrorToast } from '../hooks';
 import PartyInfo from './PartyInfo';
 import NoData from './NoData';
-// import { partyMock } from '../mocks';
 import { Button } from 'primereact/button';
 import { userApiSlice } from '../store/reducers/UserApiSlice';
 import { createToast } from '../utils/toasts';
@@ -17,9 +16,9 @@ interface PartyItemProps {
 
 const PartyItem: FC<PartyItemProps> = ({ currentListItem }) => {
   const { data, error, isLoading } =
-    partiesApiSlice.useGetPartyQuery<useGetQueryResponce<IParty>>(
-      currentListItem
-    );
+    partiesApiSlice.useGetPartyQuery<useGetQueryResponce<IParty>>(currentListItem, {
+      skip: currentListItem === null,
+    });
   const [sendRequest, { data: requestData, error: requestError }] =
     userApiSlice.useSendRequestMutation();
 
@@ -54,7 +53,7 @@ const PartyItem: FC<PartyItemProps> = ({ currentListItem }) => {
         >
           {user?.name &&
             user.role === userRole &&
-            !data.statusOfParticipationRequest && (
+            !data.participationRequestStatus && (
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Button
                   label="Send Request"

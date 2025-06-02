@@ -1,5 +1,5 @@
 export const TOKEN_KEY = 'access_token';
-export const apiUrl = '';
+export const apiUrl = '/api';
 export const defaultDelay = 500;
 export const defaultCurrentPage = 0;
 export const defaultPaginationPage = 0;

@@ -55,12 +55,13 @@ const AuthorizationModal: FC<IAuthorizationModal> = ({ setVisible }) => {
   useEffect(() => {
     if (data) {
       refSubmitting.current(false);
-
-      const user = getUserFromToken(data.access_token);
-
+      const token = data.accessToken
+      const user = getUserFromToken(token);
+        console.log(user)
       if (user) {
-        setToken(data.access_token);
-        dispatch(setUserToken(data.access_token));
+        console.log(data)
+        setToken(token);
+        dispatch(setUserToken(token));
         dispatch(setUserData(user));
         history(from);
       }

@@ -4,7 +4,6 @@ import { Form, Formik } from 'formik';
 import { MySelect, MyTextInput, MyTextTextAria } from './FormsFields';
 import { Button } from 'primereact/button';
 import LocationMap from './LocationMap';
-// import { partyTypes } from '../mocks';
 import FileUploader from './FileUploader';
 import { IParty, IShortItem } from '../types/responce';
 import DatePicker from './DatePicker';
@@ -18,7 +17,7 @@ interface PartyFormProps {
 }
 
 const PartyForm: FC<PartyFormProps> = ({ onSubmit, onCancel, party, partyTypes, isLoading }) => {
-  const [file, setFile] = useState<File>(null!);
+  const [file, setFile] = useState<File | null>(null);
 
   return (
     <Formik
@@ -28,6 +27,7 @@ const PartyForm: FC<PartyFormProps> = ({ onSubmit, onCancel, party, partyTypes, 
         ageRestriction: party?.ageRestriction || '',
         countOfPlaces: party?.countOfPlaces || '',
         city: party?.city || '',
+        ticketCost: party?.ticketCost || 0,
         dateOfEvent: party?.dateOfEvent || new Date().toString(),
         type: party?.type || '',
         cords: party?.coordinates || '',
@@ -56,6 +56,10 @@ const PartyForm: FC<PartyFormProps> = ({ onSubmit, onCancel, party, partyTypes, 
             'Must be selected'
           )
           .required('Required'),
+        ticketCost: Yup.number()
+          .min(0, 'Cost cannot be less than 0')
+          .max(1000, 'Cost cannot be greater than 1000')
+          .required('Cost field is required'),
         cords: Yup.string().required('Required'),
       })}
       onSubmit={(values, { setSubmitting }) => {
@@ -67,30 +71,35 @@ const PartyForm: FC<PartyFormProps> = ({ onSubmit, onCancel, party, partyTypes, 
           ageRestriction: values.ageRestriction || null,
           description: values.description || null,
           city: values.city,
-          dateOfEvent: values.dateOfEvent,
+          dateOfEvent: new Date(values.dateOfEvent).toISOString(),
+          fileName: file ? file.name : null,
+          ticketCost: values.ticketCost
         };
 
         if (party) {
           onSubmit(data, setSubmitting);
         } else {
           const formData = new FormData();
-
-          formData.append('dto', JSON.stringify(data));
-          formData.append('file', file);
+          formData.append('dto', new Blob([JSON.stringify(data)], { type: 'application/json' }));
+          if (file && file instanceof File) {
+            formData.append('image', file);
+          } else {
+            console.log('No valid file to append');
+          }
 
           onSubmit(formData, setSubmitting);
         }
       }}
     >
       {({
-        isValid,
-        isSubmitting,
-        dirty,
-        values,
-        errors,
-        setFieldValue,
-        touched,
-      }) => {
+          isValid,
+          isSubmitting,
+          dirty,
+          values,
+          errors,
+          setFieldValue,
+          touched,
+        }) => {
         return (
           <Form
             className="flex flex-column px-4 py-5 gap-2 overflow-y-auto"
@@ -130,6 +139,11 @@ const PartyForm: FC<PartyFormProps> = ({ onSubmit, onCancel, party, partyTypes, 
               type={'number'}
             />
             <MyTextInput
+              label={'Ticket cost'}
+              name={'ticketCost'}
+              type={'number'}
+            />
+            <MyTextInput
               label={'Count Of Places'}
               name={'countOfPlaces'}
               type={'number'}
@@ -150,7 +164,14 @@ const PartyForm: FC<PartyFormProps> = ({ onSubmit, onCancel, party, partyTypes, 
                 <div className="field-error">{errors.dateOfEvent}</div>
               )}
             </div>
-            {!party && <FileUploader setFile={setFile} />}
+            {!party && (
+              <div>
+                <FileUploader setFile={setFile} />
+                {!file && touched.name && (
+                  <div className="field-error">File is required</div>
+                )}
+              </div>
+            )}
             <div>
               <p
                 style={{ margin: '10px 0' }}
@@ -171,7 +192,7 @@ const PartyForm: FC<PartyFormProps> = ({ onSubmit, onCancel, party, partyTypes, 
             <div className="flex align-items-center gap-2">
               <Button
                 label={party ? 'Update' : 'Create'}
-                disabled={isSubmitting || !isValid || !dirty}
+                disabled={isSubmitting || !isValid || !dirty || (!party && !file)}
                 type="submit"
                 text
                 loading={isLoading}

@@ -5,6 +5,8 @@ const isToken = (tokenName: string = TOKEN_KEY) => {
 };
 
 const setToken = (token: string, tokenName: string = TOKEN_KEY) => {
+  console.log(tokenName)
+  console.log(token)
   localStorage.setItem(tokenName, token);
 };
 

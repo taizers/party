@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from 'react';
-// import { organizatorslistOfPartiesMock } from '../mocks';
 import {
   IOrganizatorsParty,
   IResponcePaginatedData,
@@ -23,10 +22,14 @@ import { Button } from 'primereact/button';
 import { IDataTableItemTemplate } from '../types';
 import Loader from '../components/Loader';
 import { defaultPaginationLimit, defaultPaginationPage } from '../constants';
+import SearchBar from '../components/SearchBar.tsx';
 
 const OrganizatorsParties: FC = () => {
   const [page, setPage] = useState<number>(defaultPaginationPage);
   const [limit, setLimit] = useState<number>(defaultPaginationLimit);
+  const [total, setTotal] = useState<number>(0);
+  const [currentParties, setCurrentParties] = useState<IOrganizatorsParty[]>([]);
+  const [search, setSearch] = useState<string>('');
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const { data, error, isLoading } =
     organizatorApiSlice.useGetOrganizatorsPartiesListQuery<
@@ -42,6 +45,22 @@ const OrganizatorsParties: FC = () => {
 
   useShowErrorToast(error);
   useShowErrorToast(deleteError);
+
+  useEffect(() => {
+    if (search === '') {
+      setCurrentParties(data?.content || []);
+      setTotal(data?.totalElements || 0);
+      return;
+    }
+
+    const newData = data?.content?.filter(item =>
+      item.type.toLowerCase().includes(search.toLowerCase()) ||
+      item.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    setCurrentParties(newData);
+    setTotal(newData?.length);
+  }, [search, data]);
 
   useEffect(() => {
     if (deleteData) {
@@ -124,20 +143,31 @@ const OrganizatorsParties: FC = () => {
           {isModalOpen && <PartyModal setVisible={setModalOpen} />}
         </div>
       }
+      {!!currentParties.length && (
+        <div
+          style={{
+            alignSelf: 'center',
+          }}
+        >
+          <SearchBar search={search} setSearch={setSearch} />
+        </div>
+      )}
       {data && (
         <AdminTable<IOrganizatorsParty>
           columns={columns as IDataTableItemTemplate<IOrganizatorsParty>[]}
-          values={data.content}
+          values={currentParties}
           title={'Organizator'}
         />
       )}
       {!data && !isLoading && <NoData />}
       {isLoading && <Loader />}
-      <PaginationComponent
-        page={{ current: page, setPage }}
-        limit={{ current: limit, setLimit }}
-        itemsCount={data?.totalElements || 1}
-      />
+      {!!total &&
+        <PaginationComponent
+          page={{ current: page, setPage }}
+          limit={{ current: limit, setLimit }}
+          itemsCount={total}
+        />
+      }
     </div>
   );
 };

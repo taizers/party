@@ -41,6 +41,7 @@ export const useShowErrorToast = (
     if (error && 'status' in error) {
       createToast.error({ message: error.data, status: error.status });
     }
+
   }, [error]);
 };
 

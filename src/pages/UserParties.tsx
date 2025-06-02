@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from 'react';
-// import { userslistOfPartiesMock } from '../mocks';
 import { partiesApiSlice } from '../store/reducers/PartiesApiSlice';
 import {
   IResponcePaginatedData,
@@ -23,10 +22,14 @@ import { userApiSlice } from '../store/reducers/UserApiSlice';
 import { IDataTableItemTemplate } from '../types';
 import Loader from '../components/Loader';
 import { defaultPaginationLimit, defaultPaginationPage } from '../constants';
+import SearchBar from '../components/SearchBar.tsx';
 
 const UserParties: FC = () => {
   const [page, setPage] = useState<number>(defaultPaginationPage);
   const [limit, setLimit] = useState<number>(defaultPaginationLimit);
+  const [total, setTotal] = useState<number>(0);
+  const [currentParties, setCurrentParties] = useState<IUsersParty[]>([]);
+  const [search, setSearch] = useState<string>('');
   const { data, error, isLoading } = partiesApiSlice.useGetPartiesListQuery<
     useGetQueryResponce<IResponcePaginatedData<IUsersParty>>
   >({
@@ -41,6 +44,22 @@ const UserParties: FC = () => {
   useShowErrorToast(error);
   useShowErrorToast(gradeError);
   useShowErrorToast(leaveError);
+
+  useEffect(() => {
+    if (search === '') {
+      setCurrentParties(data?.content || []);
+      setTotal(data?.totalElements || 0);
+      return;
+    }
+
+    const newData = data?.content?.filter(item =>
+      item.type.toLowerCase().includes(search.toLowerCase()) ||
+      item.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    setCurrentParties(newData);
+    setTotal(newData?.length);
+  }, [search, data]);
 
   useEffect(() => {
     if (leaveData) {
@@ -122,20 +141,31 @@ const UserParties: FC = () => {
 
   return (
     <div style={{ padding: '10px' }}>
+      {!!currentParties.length && (
+        <div
+          style={{
+            alignSelf: 'center',
+          }}
+        >
+          <SearchBar search={search} setSearch={setSearch} />
+        </div>
+      )}
       {data && (
         <AdminTable<IUsersParty>
           columns={columns as IDataTableItemTemplate<IUsersParty>[]}
-          values={data.content}
+          values={currentParties}
           title={'User'}
         />
       )}
       {!data && !isLoading && <NoData />}
       {isLoading && <Loader />}
-      <PaginationComponent
-        page={{ current: page, setPage }}
-        limit={{ current: limit, setLimit }}
-        itemsCount={data?.totalElements || 1}
-      />
+      {!!total &&
+        <PaginationComponent
+          page={{ current: page, setPage }}
+          limit={{ current: limit, setLimit }}
+          itemsCount={total}
+        />
+      }
     </div>
   );
 };

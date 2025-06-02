@@ -42,7 +42,7 @@ const AuthorizationLoginForm: FC<AuthorizationLoginFormProps> = ({
           .max(25, 'Must be 25 characters or less')
           .required('Required'),
         password: Yup.string()
-          .min(8, 'Must be 8 characters or more')
+          .min(5, 'Must be 8 characters or more')
           .max(20, 'Must be 20 characters or less')
           .required('Required'),
       })}

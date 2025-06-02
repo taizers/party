@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from 'react';
-// import { adminslistOfPartiesMock } from '../mocks';
 import {
   IAdminsParty,
   IResponcePaginatedData,
@@ -21,10 +20,15 @@ import { adminApiSlice } from '../store/reducers/AdminApiSlice';
 import { IDataTableItemTemplate } from '../types';
 import Loader from '../components/Loader';
 import { defaultPaginationLimit, defaultPaginationPage } from '../constants';
+import SearchBar from '../components/SearchBar.tsx';
 
 const AdminsParties: FC = () => {
   const [page, setPage] = useState<number>(defaultPaginationPage);
   const [limit, setLimit] = useState<number>(defaultPaginationLimit);
+  const [total, setTotal] = useState<number>(0);
+  const [currentParties, setCurrentParties] = useState<IAdminsParty[]>([]);
+  const [search, setSearch] = useState<string>('');
+
   const { data, error, isLoading } = adminApiSlice.useGetAdminPartiesListQuery<
     useGetQueryResponce<IResponcePaginatedData<IAdminsParty>>
   >({
@@ -39,6 +43,22 @@ const AdminsParties: FC = () => {
   useShowErrorToast(error);
   useShowErrorToast(deleteError);
   useShowErrorToast(updatedError);
+
+  useEffect(() => {
+    if (search === '') {
+      setCurrentParties(data?.content || []);
+      setTotal(data?.totalElements || 0);
+      return;
+    }
+
+    const newData = data?.content?.filter(item =>
+      item.type.toLowerCase().includes(search.toLowerCase()) ||
+      item.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    setCurrentParties(newData);
+    setTotal(newData?.length);
+  }, [search, data]);
 
   useEffect(() => {
     if (deleteData) {
@@ -109,20 +129,31 @@ const AdminsParties: FC = () => {
 
   return (
     <div style={{ padding: '10px' }}>
+      {!!currentParties.length && (
+        <div
+          style={{
+            alignSelf: 'center',
+          }}
+        >
+          <SearchBar search={search} setSearch={setSearch} />
+        </div>
+      )}
       {data && (
         <AdminTable<IAdminsParty>
           columns={columns as IDataTableItemTemplate<IAdminsParty>[]}
-          values={data.content}
+          values={currentParties}
           title={'Administrator'}
         />
       )}
       {!data && !isLoading && <NoData />}
       {isLoading && <Loader />}
-      <PaginationComponent
-        page={{ current: page, setPage }}
-        limit={{ current: limit, setLimit }}
-        itemsCount={data?.totalElements || 1}
-      />
+      {!!total &&
+        <PaginationComponent
+          page={{ current: page, setPage }}
+          limit={{ current: limit, setLimit }}
+          itemsCount={total}
+        />
+      }
     </div>
   );
 };

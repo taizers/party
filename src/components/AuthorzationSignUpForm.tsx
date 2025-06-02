@@ -31,6 +31,12 @@ const fields = [
     placeholder: 'Your age...',
   },
   {
+    name: 'city',
+    label: 'City',
+    type: 'text',
+    placeholder: 'City...',
+  },
+  {
     name: 'password',
     label: 'Password',
     type: 'password',
@@ -55,8 +61,9 @@ const AuthorizationSignUpForm: FC<AuthorizationSignUpFormProps> = ({
         username: '',
         email: '',
         age: '',
+        city: '',
         password: '',
-        confirm_password: '',
+        confirm_password: ''
       }}
       validationSchema={Yup.object({
         organizer: Yup.boolean(),
@@ -65,12 +72,16 @@ const AuthorizationSignUpForm: FC<AuthorizationSignUpFormProps> = ({
           .required('Required'),
         email: Yup.string().email('Invalid email').required('Required'),
         age: Yup.number()
-          .min(16, 'Must be more then 16')
-          .max(110, 'Must be less then 110')
+          .min(14, 'Must be more then 16')
+          .max(100, 'Must be less then 110')
           .required('Required'),
         password: Yup.string()
-          .min(8, 'Must be 8 characters or more')
+          .min(5, 'Must be 5 characters or more')
           .max(20, 'Must be 20 characters or less')
+          .required('Required'),
+        city: Yup.string()
+          .min(3, 'Must be longer than 2 characters')
+          .max(15, 'Must be shorter than 16 characters')
           .required('Required'),
         confirm_password: Yup.string()
           .oneOf([Yup.ref('password')], 'Passwords must match')

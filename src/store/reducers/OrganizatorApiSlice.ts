@@ -26,7 +26,7 @@ export const organizatorApiSlice = apiSlice.injectEndpoints({
     }),
     getOrganizatorsPartiesList: builder.query({
       query: ({ page, limit }) => ({
-        url: `/organizer/my-parties?page=${page}&size=${limit}`,
+        url: `/organizer/parties?page=${page}&size=${limit}`,
       }),
       providesTags: ['OrganizatorParty'],
     }),

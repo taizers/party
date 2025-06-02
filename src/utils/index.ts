@@ -5,34 +5,56 @@ export const getUserFromToken = (token?: string | null) => {
   if (!token) {
     return {};
   }
-  
+
   try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const currentDate = new Date();
-
-    if (currentDate < payload.exp) {
-      const role = payload.realm_access?.roles?.find(
-        (item: string) =>
-          item === 'ORGANIZER' || item === 'ADMIN' || item === 'USER'
-      );
-
-      return {
-        name: payload.preferred_username,
-        email: payload.email,
-        role,
-      };
+    const tokenParts = token.split('.');
+    if (tokenParts.length !== 3) {
+      throw new Error('Invalid token format');
     }
 
-    clearToken();
-    return {};
+    const payload = JSON.parse(atob(tokenParts[1]));
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+
+    if (payload.exp && currentTimestamp > payload.exp) {
+      throw new Error('Token expired');
+    }
+
+    const userData = {
+      name: payload.preferred_username || payload.name || payload.sub || 'Unknown',
+      email: payload.email || payload.upn || payload.unique_name || '',
+      role: getRoleFromPayload(payload),
+      fullPayload: payload // Для отладки
+    };
+
+    return userData;
   } catch (err) {
-    if (err) {
-      createToast.error('Invalid Token');
-
-      clearToken();
-      return {};
-    }
+    console.error('Failed to parse token:', err);
+    clearToken();
+    createToast.error('Invalid or expired token');
+    return {};
   }
+};
+
+const getRoleFromPayload = (payload: any): string => {
+  if (payload.realm_access?.roles) {
+    const role = payload.realm_access.roles.find((item: string) =>
+      ['ORGANIZER', 'ADMIN', 'USER'].includes(item)
+    );
+    if (role) return role;
+  }
+
+  if (payload.roles) {
+    const role = payload.roles.find((item: string) =>
+      ['ORGANIZER', 'ADMIN', 'USER'].includes(item)
+    );
+    if (role) return role;
+  }
+
+  if (payload.role) {
+    return payload.role;
+  }
+
+  return 'USER';
 };
 
 export const storeCity = async (

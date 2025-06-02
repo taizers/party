@@ -21,14 +21,13 @@ export interface IGuestRequest {
   id: number;
   username: string;
   age: number;
-  rate: number;
 }
 export interface IParty {
   id: number;
   name: string;
   type: string;
   city: string;
-  statusOfParticipationRequest: string;
+  participationRequestStatus: string;
   organizerUsername: string;
   ageRestriction: number;
   guests: IGuest[];
