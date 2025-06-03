@@ -10,28 +10,26 @@ import {
   setUserData,
 } from '../reducers/AuthSlice.ts';
 import { apiUrl } from '../../constants.ts';
-import { clearToken, setToken } from '../../utils/localStorage';
-import { getUserFromToken } from '../../utils/index.ts';
+import { clearToken, setToken, getToken } from '../../utils/localStorage';
+import { getUserFromToken } from '../../utils';
 
 interface IRefreshResultData {
-  response: string;
+  access_token: string;
 }
+
+let refreshPromise: any = null;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${apiUrl}`,
   credentials: 'include',
-  prepareHeaders: (headers, state) => {
-    const getToken = state.getState() as { auth: { token: string } };
-    const token = getToken.auth.token;
+  prepareHeaders: (headers, { getState }) => {
+    const { auth } = getState() as { auth: { token: string } };
+    const localToken = getToken();
+    const token = auth.token || localToken;
 
     try {
-      // headers.set(
-      //   'Access-Control-Allow-Methods',
-      //   'GET, POST, OPTIONS, PUT, DELETE'
-      // );
-
       if (token) {
-        headers.set('authorization', `Bearer ${token}`);
+        headers.set('Authorization', `Bearer ${token}`);
       }
     } catch (error) {
       console.log(error);
@@ -50,17 +48,29 @@ const baseQueryWithReauth = async (
 
   if (result?.error?.status === 401) {
     console.log('sending refresh token');
-    //send refresh token to get new access token
-    const refreshResult = await baseQuery('/auth/refresh', api, extraOptions);
+
+    if (refreshPromise) {
+      console.log('Waiting for existing refresh promise');
+      await refreshPromise;
+      return baseQuery(args, api, extraOptions);
+    }
+
+    refreshPromise = baseQuery({
+        url: '/auth/refresh',
+        method: 'POST',
+      },
+      api,
+      extraOptions
+    );
+    const refreshResult = await refreshPromise;
+
     console.log('refreshResult', refreshResult);
 
     if (refreshResult?.data) {
-      const resultData = { ...refreshResult.data } as IRefreshResultData;
-
-      const token = resultData.response;
+      const resultData = refreshResult.data as IRefreshResultData;
+      const token = resultData.access_token;
       const user = getUserFromToken(token);
 
-      //store the new token and user
       if (user) {
         api.dispatch(setUserToken(token));
         api.dispatch(setUserData(user));
@@ -69,9 +79,11 @@ const baseQueryWithReauth = async (
         api.dispatch(setUserData({}));
       }
 
-      //retry original query with new access token
+      refreshPromise = null;
+
       result = await baseQuery(args, api, extraOptions);
     } else {
+      refreshPromise = null;
       api.dispatch(localLogout());
       clearToken();
     }
