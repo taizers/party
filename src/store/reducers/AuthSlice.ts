@@ -11,12 +11,8 @@ interface IPortfolioState {
 }
 
 const initialState: IPortfolioState = {
-  user: {
-    email: 'Alex@mail.ru',
-    role: 'USER',
-    name: 'Alex',
-  },
-  token: 'some token',
+  user: null,
+  token: null,
   location: null,
 };
 
